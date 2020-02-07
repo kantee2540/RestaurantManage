@@ -168,6 +168,10 @@ class Ui_MainWindow(object):
         self.actionAdd_Menu.setText(_translate("MainWindow", "Add Menu..."))
         self.actionEdit_Menu.setText(_translate("MainWindow", "Edit Menu..."))
         self.table_manage()
+        self.cancel_button.clicked.connect(self.test)
+
+    def test(self):
+        print("?????")
 
     def table_manage(self):
         table_header = ["ชื่อโต๊ะ", "จำนวนคน", "เวลาเข้า", "เวลาที่เหลือ", "ราคามื้อนี้"]
