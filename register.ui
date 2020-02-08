@@ -37,11 +37,11 @@
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <pointsize>26</pointsize>
      </font>
     </property>
     <property name="text">
-     <string>Register</string>
+     <string>ลงทะเบียน</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_2">
@@ -54,7 +54,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Username</string>
+     <string>บัญชีผู้ใช้</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="user_edit">
@@ -77,7 +77,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Password</string>
+     <string>รหัสผ่าน</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="pass_edit">
@@ -116,7 +116,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Confirm Password</string>
+     <string>ยืนยันรหัสผ่าน</string>
     </property>
    </widget>
    <widget class="QPushButton" name="register_button">
@@ -128,8 +128,13 @@
       <height>51</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
     <property name="text">
-     <string>Register</string>
+     <string>ลงทะเบียน</string>
     </property>
    </widget>
   </widget>
@@ -139,7 +144,7 @@
      <x>0</x>
      <y>0</y>
      <width>450</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

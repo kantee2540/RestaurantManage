@@ -8,7 +8,6 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtGui import QStandardItemModel, QStandardItem
 
 
 class Ui_MainWindow(object):
@@ -46,7 +45,7 @@ class Ui_MainWindow(object):
         self.cancel_button_2.setFont(font)
         self.cancel_button_2.setObjectName("cancel_button_2")
         self.verticalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
-        self.verticalLayoutWidget.setGeometry(QtCore.QRect(659, 99, 221, 371))
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(660, 110, 221, 241))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.verticalLayoutWidget.setFont(font)
@@ -95,11 +94,14 @@ class Ui_MainWindow(object):
         font.setPointSize(24)
         self.table_no.setFont(font)
         self.table_no.setObjectName("table_no")
-
         self.tableView = QtWidgets.QTableView(self.centralwidget)
-        self.tableView.setGeometry(QtCore.QRect(15, 51, 621, 601))
+        self.tableView.setGeometry(QtCore.QRect(15, 51, 621, 591))
         self.tableView.setObjectName("tableView")
-
+        self.line = QtWidgets.QFrame(self.centralwidget)
+        self.line.setGeometry(QtCore.QRect(660, 90, 221, 16))
+        self.line.setFrameShape(QtWidgets.QFrame.HLine)
+        self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line.setObjectName("line")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 900, 21))
@@ -120,7 +122,6 @@ class Ui_MainWindow(object):
         self.actionSettings.setObjectName("actionSettings")
         self.actionQuit = QtWidgets.QAction(MainWindow)
         self.actionQuit.setObjectName("actionQuit")
-        self.actionQuit.setShortcut("Ctrl+Q")
         self.actionHelp = QtWidgets.QAction(MainWindow)
         self.actionHelp.setObjectName("actionHelp")
         self.actionAbout = QtWidgets.QAction(MainWindow)
@@ -129,8 +130,12 @@ class Ui_MainWindow(object):
         self.actionAdd_Menu.setObjectName("actionAdd_Menu")
         self.actionEdit_Menu = QtWidgets.QAction(MainWindow)
         self.actionEdit_Menu.setObjectName("actionEdit_Menu")
+        self.actionSignout = QtWidgets.QAction(MainWindow)
+        self.actionSignout.setObjectName("actionSignout")
         self.menuFile.addAction(self.actionNew)
         self.menuFile.addAction(self.actionSettings)
+        self.menuFile.addSeparator()
+        self.menuFile.addAction(self.actionSignout)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionQuit)
         self.menuHelp.addAction(self.actionHelp)
@@ -146,7 +151,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Restaurant Management"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label.setText(_translate("MainWindow", "RESTAURANT NAME"))
         self.check_bill.setText(_translate("MainWindow", "คิดเงิน"))
         self.cancel_button.setText(_translate("MainWindow", "ยกเลิกรายการ"))
@@ -167,43 +172,4 @@ class Ui_MainWindow(object):
         self.actionAbout.setText(_translate("MainWindow", "About"))
         self.actionAdd_Menu.setText(_translate("MainWindow", "Add Menu..."))
         self.actionEdit_Menu.setText(_translate("MainWindow", "Edit Menu..."))
-        self.table_manage()
-        self.cancel_button.clicked.connect(self.test)
-
-    def test(self):
-        print("?????")
-
-    def table_manage(self):
-        table_header = ["ชื่อโต๊ะ", "จำนวนคน", "เวลาเข้า", "เวลาที่เหลือ", "ราคามื้อนี้"]
-        self.model = QStandardItemModel()
-        self.tableView.setModel(self.model)
-        self.model.setHorizontalHeaderLabels(table_header)
-        self.tableView.setColumnWidth(0, 160)
-        self.tableView.setEditTriggers(QtWidgets.QTableView.NoEditTriggers)
-        self.tableView.setSelectionBehavior(QtWidgets.QTableView.SelectRows)
-        self.tableView.clicked.connect(self.selected_item_tableview)
-        self.values = []
-        row = 10
-        column = 5
-        for i in range(row):
-            sub_values = []
-            for j in range(column):
-                if j % 2 == 0:
-                    value = "Ma"
-                elif i == 3:
-                    value = "Ya"
-                else:
-                    value = "Dog"
-                sub_values.append(value)
-            self.values.append(sub_values)
-
-        for value in self.values:
-            row = []
-            for item in value:
-                cell = QStandardItem(str(item))
-                row.append(cell)
-            self.model.appendRow(row)
-
-    def selected_item_tableview(self, index):
-        value = index.row()
-        print(self.values[value])
+        self.actionSignout.setText(_translate("MainWindow", "Signout"))
