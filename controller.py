@@ -2,11 +2,13 @@
 
 from PyQt5 import QtWidgets
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
+import pymongo
 
 import main
 import register
 import login
 import random
+import hashlib
 
 
 class LoginPage(QtWidgets.QMainWindow):
@@ -74,6 +76,9 @@ class MainPage(QtWidgets.QMainWindow):
             if q == 0:
                 table_name = "{}".format(i)
                 self.ui.table_no.setText(table_name)
+            elif q == 1:
+                person_text = "จำนวนคน : {}".format(i)
+                self.ui.person.setText(person_text)
 
     def exit_app(self):
         QtWidgets.qApp.exit()
@@ -84,6 +89,53 @@ class RegisterPage(QtWidgets.QMainWindow):
         super(RegisterPage, self).__init__(parent)
         self.ui = register.Ui_MainWindow()
         self.ui.setupUi(self)
+        self.ui.error_label.hide()
+        self.ui.register_button.clicked.connect(self.register_click)
+
+    def register_click(self):
+        restaurant_name = self.ui.rest_edit.text()
+        username = self.ui.user_edit.text()
+        password = self.ui.pass_edit.text()
+        password_confirm = self.ui.pass_con_edit.text()
+        if restaurant_name != "" and username != "" and password != "" and password_confirm != "" and password == password_confirm:
+            self.register_process()
+        else:
+            self.ui.error_label.show()
+
+    def register_process(self):
+        try:
+            client = pymongo.MongoClient("mongodb+srv://kantee2540:K%61n%742540@cluster0-ww6d1.mongodb.net/test?retryWrites=true&w=majority")
+            db = client.get_database("Restaurant")
+
+            restaurant_name = self.ui.rest_edit.text()
+            username = self.ui.user_edit.text()
+            password = self.ui.pass_edit.text()
+            password_encrypt = hashlib.md5(password.encode()).hexdigest()
+
+            data = {"restaurant_name": restaurant_name, "username": username, "password": password_encrypt}
+            rs = db.User.insert_one(data)
+            if rs:
+                message = QtWidgets.QMessageBox()
+                message.setIcon(QtWidgets.QMessageBox.Information)
+                message.setText("Register successful!\n Your restaurant name : {}".format(username))
+                message.setWindowTitle("Register")
+                message.exec_()
+                self.clear_lineedit()
+                self.close()
+
+        except Exception as e:
+            print("Error = {}".format(e))
+            error_dialog = QtWidgets.QMessageBox()
+            error_dialog.setIcon(QtWidgets.QMessageBox.Warning)
+            error_dialog.setText("Error message : {}\n Please Contact ch.kantee_st@tni.ac.th".format(e))
+            error_dialog.setWindowTitle("Error")
+            error_dialog.exec_()
+
+    def clear_lineedit(self):
+        self.ui.rest_edit.clear()
+        self.ui.user_edit.clear()
+        self.ui.pass_edit.clear()
+        self.ui.pass_con_edit.clear()
 
 
 if __name__ == "__main__":

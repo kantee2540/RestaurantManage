@@ -54,10 +54,10 @@
      </rect>
     </property>
     <property name="text">
-     <string>บัญชีผู้ใช้</string>
+     <string>ชื่อร้านค้า</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="user_edit">
+   <widget class="QLineEdit" name="rest_edit">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -66,47 +66,11 @@
       <height>41</height>
      </rect>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::StrongFocus</enum>
+    </property>
    </widget>
    <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>190</y>
-      <width>181</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>รหัสผ่าน</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="pass_edit">
-    <property name="geometry">
-     <rect>
-      <x>22</x>
-      <y>220</y>
-      <width>411</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="echoMode">
-     <enum>QLineEdit::Password</enum>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="confirm_pass_edit">
-    <property name="geometry">
-     <rect>
-      <x>22</x>
-      <y>300</y>
-      <width>411</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="echoMode">
-     <enum>QLineEdit::Password</enum>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_4">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -116,14 +80,88 @@
      </rect>
     </property>
     <property name="text">
+     <string>รหัสผ่าน</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>350</y>
+      <width>181</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
      <string>ยืนยันรหัสผ่าน</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_5">
+    <property name="geometry">
+     <rect>
+      <x>18</x>
+      <y>190</y>
+      <width>181</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>บัญชีผู้ใช้</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="user_edit">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>220</y>
+      <width>411</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::StrongFocus</enum>
+    </property>
+    <property name="echoMode">
+     <enum>QLineEdit::Normal</enum>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="pass_edit">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>300</y>
+      <width>411</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::StrongFocus</enum>
+    </property>
+    <property name="echoMode">
+     <enum>QLineEdit::Password</enum>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="pass_con_edit">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>380</y>
+      <width>411</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::StrongFocus</enum>
+    </property>
+    <property name="echoMode">
+     <enum>QLineEdit::Password</enum>
     </property>
    </widget>
    <widget class="QPushButton" name="register_button">
     <property name="geometry">
      <rect>
       <x>80</x>
-      <y>370</y>
+      <y>450</y>
       <width>281</width>
       <height>51</height>
      </rect>
@@ -135,6 +173,27 @@
     </property>
     <property name="text">
      <string>ลงทะเบียน</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="error_label">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>70</y>
+      <width>411</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>13</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ff0000;&quot;&gt;โปรดกรอกรายละเอียดให้ครบ หรือรหัสผ่านไม่ตรงกัน&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
   </widget>
