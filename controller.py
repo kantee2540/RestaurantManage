@@ -1,5 +1,6 @@
 # To Run this project run this file
 
+import sys
 from PyQt5 import QtWidgets, QtGui, QtCore
 
 import main
@@ -122,7 +123,6 @@ class RegisterPage(QtWidgets.QMainWindow):
 
 
 if __name__ == "__main__":
-    import sys
     app = QtWidgets.QApplication(sys.argv)
     myApp = LoginPage()
     myApp.show()

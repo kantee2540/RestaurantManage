@@ -23,6 +23,8 @@ class Ui_MainWindow(object):
         self.tableName.setGeometry(QtCore.QRect(20, 10, 461, 31))
         font = QtGui.QFont()
         font.setPointSize(16)
+        font.setBold(True)
+        font.setWeight(75)
         self.tableName.setFont(font)
         self.tableName.setTextFormat(QtCore.Qt.AutoText)
         self.tableName.setObjectName("tableName")
@@ -104,7 +106,7 @@ class Ui_MainWindow(object):
         self.line.setObjectName("line")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 900, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 900, 22))
         self.menubar.setObjectName("menubar")
         self.menuFile = QtWidgets.QMenu(self.menubar)
         self.menuFile.setObjectName("menuFile")
@@ -173,3 +175,13 @@ class Ui_MainWindow(object):
         self.actionAdd_Menu.setText(_translate("MainWindow", "Add Menu..."))
         self.actionEdit_Menu.setText(_translate("MainWindow", "Edit Menu..."))
         self.actionSignout.setText(_translate("MainWindow", "Signout"))
+
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    MainWindow = QtWidgets.QMainWindow()
+    ui = Ui_MainWindow()
+    ui.setupUi(MainWindow)
+    MainWindow.show()
+    sys.exit(app.exec_())
