@@ -25,7 +25,9 @@ def login_authen(self):
         login_user = db.User.find_one({"username": username})
         if login_user:
             if password == login_user["password"]:
-                self.user = login_user["username"]
+                #self.user = login_user["username"]
+                self.setting.setValue('user', login_user["username"])
+                self.setting.setValue('rest_name', login_user["restaurant_name"])
                 return True
             else:
                 return False
@@ -71,6 +73,23 @@ def register_process(self):
 
     except Exception as e:
         message_box("Error", "Error message : \"{}\"Please Contact ch.kantee_st@tni.ac.th".format(e))
+
+
+def add_table(table_name, person, restaurant):
+    try:
+        client = get_database_client()
+        db = client.get_database("Restaurant")
+        data = {"table_name": table_name,
+                "person": person,
+                "restaurant_name": restaurant}
+        at = db.Table.insert_one(data)
+        if at:
+            return True
+        else:
+            return False
+
+    except Exception as e:
+        message_box("Error", "Error message: \"{}\" Please Contact ch.kantee_st@tni.ac.th".format(e))
 
 
 def clear_lineedit(self):

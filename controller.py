@@ -6,9 +6,10 @@ from PyQt5 import QtWidgets, QtGui, QtCore
 import main
 import register
 import login
+import addmenu
 
 import random
-from data_controller import login_authen, register_process, get_user_detail
+import data_controller
 
 
 def message_box(title, text_message):
@@ -26,22 +27,21 @@ class LoginPage(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
         self.ui.login_button.clicked.connect(self.login_click)
         self.ui.register_button.clicked.connect(self.register_click)
-        self.user = ""
+        self.setting = QtCore.QSettings('config', 'restaurant')
         self.main_window = MainPage()
         self.register_window = RegisterPage()
         self.ui.pass_edit.returnPressed.connect(self.login_click)
 
     def login_click(self):
-        if login_authen(self):
+        if data_controller.login_authen(self):
             self.hide()
             self.main_window.show()
-            rest_name = get_user_detail(self.user)
-            self.main_window.ui.tableName.setText(rest_name)
-            print("LOGIN = {}".format(rest_name))
+            self.main_window.ui.tableName.setText(self.setting.value('rest_name'))
+            print("LOGIN = {}".format(self.setting.value('rest_name')))
             self.ui.user_edit.clear()
             self.ui.pass_edit.clear()
         else:
-            message_box("Login", "Username or password incorrect please try again")
+            message_box("Login", "บัญชีผู้ใช้ หรือรหัสผ่านผิด โปรดลองอีกครั้ง\nถ้าหากไม่สำเร็จกรุณาสมัครใหม่หรือติดต่อผู้ดูแลแอพพลิเคชั่นนี้")
 
     def register_click(self):
         self.register_window.show()
@@ -52,10 +52,16 @@ class MainPage(QtWidgets.QMainWindow):
         super(MainPage, self).__init__(parent)
         self.ui = main.Ui_MainWindow()
         self.ui.setupUi(self)
+        self.addmenu = AddMenuPage()
         self.settings = QtCore.QSettings(self)
         self.ui.actionSignout.triggered.connect(self.sign_out)
         self.ui.actionQuit.triggered.connect(self.exit_app)
+        self.ui.add_table_button.clicked.connect(self.click_add_menu)
         self.table_manage()
+
+    def click_add_menu(self):
+        self.addmenu.setWindowModality(QtCore.Qt.ApplicationModal)
+        self.addmenu.show()
 
     def sign_out(self):
         self.hide()
@@ -103,6 +109,24 @@ class MainPage(QtWidgets.QMainWindow):
         QtWidgets.qApp.exit()
 
 
+class AddMenuPage(QtWidgets.QMainWindow):
+    def __init__(self, parent=None):
+        super(AddMenuPage, self).__init__(parent)
+        self.ui = addmenu.Ui_MainWindow()
+        self.ui.setupUi(self)
+        self.setting = QtCore.QSettings('config', 'restaurant')
+        self.ui.add_table_button.clicked.connect(self.add_table)
+
+    def add_table(self):
+        table_name = self.ui.table_name_lineedit.text()
+        person = self.ui.person_spinBox.text()
+        restaurant = self.setting.value("rest_name")
+        if data_controller.add_table(table_name, person, restaurant):
+            self.hide()
+        else:
+            message_box("Error", "Cannot Insert your information to database")
+
+
 class RegisterPage(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(RegisterPage, self).__init__(parent)
@@ -116,8 +140,9 @@ class RegisterPage(QtWidgets.QMainWindow):
         username = self.ui.user_edit.text()
         password = self.ui.pass_edit.text()
         password_confirm = self.ui.pass_con_edit.text()
-        if restaurant_name != "" and username != "" and password != "" and password_confirm != "" and password == password_confirm:
-            register_process(self)
+        if restaurant_name != "" and username != "" and password != "" \
+                and password_confirm != "" and password == password_confirm:
+            data_controller.register_process(self)
         else:
             self.ui.error_label.show()
 
