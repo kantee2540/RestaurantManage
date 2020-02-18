@@ -261,6 +261,7 @@
     </property>
     <addaction name="actionSettings"/>
     <addaction name="separator"/>
+    <addaction name="actionEditRest"/>
     <addaction name="actionSignout"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
@@ -345,7 +346,7 @@
   </action>
   <action name="addmenu_action">
    <property name="text">
-    <string>เพิ่มเมนู</string>
+    <string>เพิ่มโต๊ะอาหาร</string>
    </property>
   </action>
   <action name="cancelmenu_action">
@@ -362,6 +363,11 @@
    </property>
    <property name="shortcutVisibleInContextMenu">
     <bool>true</bool>
+   </property>
+  </action>
+  <action name="actionEditRest">
+   <property name="text">
+    <string>แก้ข้อมูลร้าน</string>
    </property>
   </action>
  </widget>

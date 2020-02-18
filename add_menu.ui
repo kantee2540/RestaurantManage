@@ -138,6 +138,9 @@
     <property name="locale">
      <locale language="English" country="UnitedStates"/>
     </property>
+    <property name="minimum">
+     <number>1</number>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

@@ -122,6 +122,8 @@ class AddMenuPage(QtWidgets.QMainWindow):
         if data_controller.add_table(table_name, person, restaurant):
             self.hide()
             main_page.table_manage()
+            self.ui.table_name_lineedit.clear()
+            self.ui.person_spinBox.setValue(1)
         else:
             message_box("Error", "Cannot Insert your information to database")
 

@@ -55,6 +55,7 @@ class Ui_MainWindow(object):
         self.person_spinBox = QtWidgets.QSpinBox(self.centralwidget)
         self.person_spinBox.setGeometry(QtCore.QRect(20, 120, 511, 41))
         self.person_spinBox.setLocale(QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.UnitedStates))
+        self.person_spinBox.setMinimum(1)
         self.person_spinBox.setObjectName("person_spinBox")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
