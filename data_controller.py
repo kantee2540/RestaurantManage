@@ -1,7 +1,9 @@
 from PyQt5 import QtWidgets, QtCore
 import pymongo
 import hashlib
+import datetime
 
+projectDb = "Restaurant"
 
 def get_database_client():
     return pymongo.MongoClient("mongodb+srv://kantee2540:K%61n%742540@cluster0-ww6d1.mongodb.net/test?retryWrites=true&w=majority")
@@ -18,7 +20,7 @@ def message_box(title, text_message):
 def login_authen(self):
     try:
         client = get_database_client()
-        db = client.get_database("Restaurant")
+        db = client.get_database(projectDb)
 
         username = self.ui.user_edit.text()
         password = hashlib.md5(self.ui.pass_edit.text().encode()).hexdigest()
@@ -43,7 +45,7 @@ def login_authen(self):
 def get_user_detail(username):
     try:
         client = get_database_client()
-        db = client.get_database("Restaurant")
+        db = client.get_database(projectDb)
         user = db.User.find_one({"username": username})
         if user:
             return user["restaurant_name"]
@@ -57,7 +59,7 @@ def get_user_detail(username):
 def register_process(self):
     try:
         client = get_database_client()
-        db = client.get_database("Restaurant")
+        db = client.get_database(projectDb)
 
         restaurant_name = self.ui.rest_edit.text()
         username = self.ui.user_edit.text()
@@ -78,7 +80,7 @@ def register_process(self):
 def add_table(table_name, person, restaurant):
     try:
         client = get_database_client()
-        db = client.get_database("Restaurant")
+        db = client.get_database(projectDb)
         data = {"table_name": table_name,
                 "person": person,
                 "restaurant_name": restaurant}
@@ -87,6 +89,18 @@ def add_table(table_name, person, restaurant):
             return True
         else:
             return False
+
+    except Exception as e:
+        message_box("Error", "Error message: \"{}\" Please Contact ch.kantee_st@tni.ac.th".format(e))
+
+
+def get_table_data(rest_name):
+    try:
+        client = get_database_client()
+        db = client.get_database(projectDb)
+        table_data = db.Table.find({"restaurant_name": rest_name})
+        if table_data:
+            return table_data
 
     except Exception as e:
         message_box("Error", "Error message: \"{}\" Please Contact ch.kantee_st@tni.ac.th".format(e))

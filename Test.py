@@ -1,4 +1,5 @@
 import random
+import datetime
 
-
-print(random.randint(0, 10))
+x = datetime.datetime.now()
+print(x.strftime("%X"))

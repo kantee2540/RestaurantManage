@@ -8,7 +8,6 @@ import register
 import login
 import addmenu
 
-import random
 import data_controller
 
 
@@ -28,23 +27,22 @@ class LoginPage(QtWidgets.QMainWindow):
         self.ui.login_button.clicked.connect(self.login_click)
         self.ui.register_button.clicked.connect(self.register_click)
         self.setting = QtCore.QSettings('config', 'restaurant')
-        self.main_window = MainPage()
-        self.register_window = RegisterPage()
         self.ui.pass_edit.returnPressed.connect(self.login_click)
 
     def login_click(self):
         if data_controller.login_authen(self):
             self.hide()
-            self.main_window.show()
-            self.main_window.ui.tableName.setText(self.setting.value('rest_name'))
-            print("LOGIN = {}".format(self.setting.value('rest_name')))
+            main_page.show()
+            main_page.table_manage()
+            main_page.ui.tableName.setText(self.setting.value('rest_name'))
+
             self.ui.user_edit.clear()
             self.ui.pass_edit.clear()
         else:
             message_box("Login", "บัญชีผู้ใช้ หรือรหัสผ่านผิด โปรดลองอีกครั้ง\nถ้าหากไม่สำเร็จกรุณาสมัครใหม่หรือติดต่อผู้ดูแลแอพพลิเคชั่นนี้")
 
     def register_click(self):
-        self.register_window.show()
+        register_page.show()
 
 
 class MainPage(QtWidgets.QMainWindow):
@@ -52,20 +50,23 @@ class MainPage(QtWidgets.QMainWindow):
         super(MainPage, self).__init__(parent)
         self.ui = main.Ui_MainWindow()
         self.ui.setupUi(self)
-        self.addmenu = AddMenuPage()
-        self.settings = QtCore.QSettings(self)
+
+        self.settings = QtCore.QSettings('config', 'restaurant')
+
         self.ui.actionSignout.triggered.connect(self.sign_out)
         self.ui.actionQuit.triggered.connect(self.exit_app)
+        self.ui.addmenu_action.triggered.connect(self.click_add_menu)
+        self.ui.refresh_action.triggered.connect(self.table_manage)
+
         self.ui.add_table_button.clicked.connect(self.click_add_menu)
-        self.table_manage()
 
     def click_add_menu(self):
-        self.addmenu.setWindowModality(QtCore.Qt.ApplicationModal)
-        self.addmenu.show()
+        addmenu_page.setWindowModality(QtCore.Qt.ApplicationModal)
+        addmenu_page.show()
 
     def sign_out(self):
         self.hide()
-        myApp.show()
+        login_page.show()
 
     def table_manage(self):
         table_header = ["ชื่อโต๊ะ", "จำนวนคน", "เวลาเข้า", "เวลาที่เหลือ", "ราคามื้อนี้"]
@@ -75,20 +76,17 @@ class MainPage(QtWidgets.QMainWindow):
         self.ui.tableView.setColumnWidth(0, 160)
         self.ui.tableView.setEditTriggers(QtWidgets.QTableView.NoEditTriggers)
         self.ui.tableView.setSelectionBehavior(QtWidgets.QTableView.SelectRows)
-        self.ui.tableView.clicked.connect(self.selected_item_tableview)
-        self.values = []
-        self.abc = ["A", 0, "B", "C", "D"]
-        row = 10
-        column = 5
-        for i in range(row):
-            sub_values = []
-            self.abc[1] = i
-            self.abc[0] = "A{}".format(random.randint(0, 50))
-            for j in self.abc:
-                sub_values.append(j)
-            self.values.append(sub_values)
 
-        for value in self.values:
+        self.ui.tableView.clicked.connect(self.selected_item_tableview)
+
+        self.values = data_controller.get_table_data(self.settings.value('rest_name'))
+        self.row_value = []
+
+        for i in self.values:
+            sub_value = [i["table_name"], i["person"], i["restaurant_name"]]
+            self.row_value.append(sub_value)
+
+        for value in self.row_value:
             row = []
             for item in value:
                 cell = QtGui.QStandardItem(str(item))
@@ -97,7 +95,7 @@ class MainPage(QtWidgets.QMainWindow):
 
     def selected_item_tableview(self, index):
         row = index.row()
-        for q, i in enumerate(self.values[row]):
+        for q, i in enumerate(self.row_value[row]):
             if q == 0:
                 table_name = "{}".format(i)
                 self.ui.table_no.setText(table_name)
@@ -123,6 +121,7 @@ class AddMenuPage(QtWidgets.QMainWindow):
         restaurant = self.setting.value("rest_name")
         if data_controller.add_table(table_name, person, restaurant):
             self.hide()
+            main_page.table_manage()
         else:
             message_box("Error", "Cannot Insert your information to database")
 
@@ -149,6 +148,11 @@ class RegisterPage(QtWidgets.QMainWindow):
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
-    myApp = LoginPage()
-    myApp.show()
+    # initialize
+    login_page = LoginPage()
+    main_page = MainPage()
+    register_page = RegisterPage()
+    addmenu_page = AddMenuPage()
+
+    login_page.show()
     sys.exit(app.exec_())

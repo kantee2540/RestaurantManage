@@ -252,14 +252,13 @@
      <x>0</x>
      <y>0</y>
      <width>900</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
-     <string>File</string>
+     <string>ไฟล์</string>
     </property>
-    <addaction name="actionNew"/>
     <addaction name="actionSettings"/>
     <addaction name="separator"/>
     <addaction name="actionSignout"/>
@@ -268,20 +267,30 @@
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
-     <string>Help</string>
+     <string>ช่วยเหลือ</string>
     </property>
     <addaction name="actionHelp"/>
     <addaction name="actionAbout"/>
    </widget>
    <widget class="QMenu" name="menuMenu">
     <property name="title">
-     <string>Menu</string>
+     <string>เมนูอาหาร</string>
     </property>
     <addaction name="actionAdd_Menu"/>
     <addaction name="actionEdit_Menu"/>
    </widget>
+   <widget class="QMenu" name="menuTable">
+    <property name="title">
+     <string>จัดการโต๊ะ</string>
+    </property>
+    <addaction name="addmenu_action"/>
+    <addaction name="cancelmenu_action"/>
+    <addaction name="separator"/>
+    <addaction name="refresh_action"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuMenu"/>
+   <addaction name="menuTable"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -292,37 +301,52 @@
   </action>
   <action name="actionSettings">
    <property name="text">
-    <string>Settings</string>
+    <string>ตั้งค่า</string>
    </property>
   </action>
   <action name="actionQuit">
    <property name="text">
-    <string>Quit</string>
+    <string>ออกจากโปรแกรม</string>
    </property>
   </action>
   <action name="actionHelp">
    <property name="text">
-    <string>Help</string>
+    <string>ช่วยเหลือ</string>
    </property>
   </action>
   <action name="actionAbout">
    <property name="text">
-    <string>About</string>
+    <string>เกี่ยวกับ Restaurant Management</string>
    </property>
   </action>
   <action name="actionAdd_Menu">
    <property name="text">
-    <string>Add Menu...</string>
+    <string>เพิ่มเมนูอาหาร</string>
    </property>
   </action>
   <action name="actionEdit_Menu">
    <property name="text">
-    <string>Edit Menu...</string>
+    <string>แก้ไขเมนูอาหาร</string>
    </property>
   </action>
   <action name="actionSignout">
    <property name="text">
-    <string>Signout</string>
+    <string>ลงชื่อออก</string>
+   </property>
+  </action>
+  <action name="addmenu_action">
+   <property name="text">
+    <string>เพิ่มเมนู</string>
+   </property>
+  </action>
+  <action name="cancelmenu_action">
+   <property name="text">
+    <string>ยกเลิกรายการ</string>
+   </property>
+  </action>
+  <action name="refresh_action">
+   <property name="text">
+    <string>รีเฟรช</string>
    </property>
   </action>
  </widget>

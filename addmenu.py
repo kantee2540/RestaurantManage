@@ -54,10 +54,11 @@ class Ui_MainWindow(object):
         self.label_3.setObjectName("label_3")
         self.person_spinBox = QtWidgets.QSpinBox(self.centralwidget)
         self.person_spinBox.setGeometry(QtCore.QRect(20, 120, 511, 41))
+        self.person_spinBox.setLocale(QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.UnitedStates))
         self.person_spinBox.setObjectName("person_spinBox")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 550, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 550, 21))
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
@@ -74,13 +75,3 @@ class Ui_MainWindow(object):
         self.label_2.setText(_translate("MainWindow", "เมนูอาหาร"))
         self.add_table_button.setText(_translate("MainWindow", "เพิ่มโต๊ะ"))
         self.label_3.setText(_translate("MainWindow", "จำนวนคน"))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec_())
