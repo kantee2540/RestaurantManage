@@ -231,6 +231,14 @@
       <height>591</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <attribute name="verticalHeaderDefaultSectionSize">
+     <number>35</number>
+    </attribute>
    </widget>
    <widget class="Line" name="line">
     <property name="geometry">
@@ -279,6 +287,8 @@
     </property>
     <addaction name="actionAdd_Menu"/>
     <addaction name="actionEdit_Menu"/>
+    <addaction name="separator"/>
+    <addaction name="actionMenu"/>
    </widget>
    <widget class="QMenu" name="menuTable">
     <property name="title">
@@ -286,6 +296,7 @@
     </property>
     <addaction name="addmenu_action"/>
     <addaction name="cancelmenu_action"/>
+    <addaction name="actionCal"/>
     <addaction name="separator"/>
     <addaction name="refresh_action"/>
    </widget>
@@ -368,6 +379,16 @@
   <action name="actionEditRest">
    <property name="text">
     <string>แก้ข้อมูลร้าน</string>
+   </property>
+  </action>
+  <action name="actionMenu">
+   <property name="text">
+    <string>เมนูอาหาร</string>
+   </property>
+  </action>
+  <action name="actionCal">
+   <property name="text">
+    <string>คิดเงินรายการ</string>
    </property>
   </action>
  </widget>

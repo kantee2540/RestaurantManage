@@ -66,6 +66,11 @@
       <height>41</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
     <property name="focusPolicy">
      <enum>Qt::StrongFocus</enum>
     </property>
@@ -118,6 +123,11 @@
       <height>41</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
     <property name="focusPolicy">
      <enum>Qt::StrongFocus</enum>
     </property>
@@ -134,6 +144,11 @@
       <height>41</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
     <property name="focusPolicy">
      <enum>Qt::StrongFocus</enum>
     </property>
@@ -149,6 +164,11 @@
       <width>411</width>
       <height>41</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
     </property>
     <property name="focusPolicy">
      <enum>Qt::StrongFocus</enum>
