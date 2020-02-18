@@ -81,8 +81,12 @@ def add_table(table_name, person, restaurant):
     try:
         client = get_database_client()
         db = client.get_database(projectDb)
+        current_time = datetime.datetime.now().strftime("%X")
+
         data = {"table_name": table_name,
                 "person": person,
+                "in_time": current_time,
+                "price": "N/A",
                 "restaurant_name": restaurant}
         at = db.Table.insert_one(data)
         if at:

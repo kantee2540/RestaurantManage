@@ -303,15 +303,24 @@
    <property name="text">
     <string>ตั้งค่า</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+,</string>
+   </property>
   </action>
   <action name="actionQuit">
    <property name="text">
     <string>ออกจากโปรแกรม</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
   </action>
   <action name="actionHelp">
    <property name="text">
     <string>ช่วยเหลือ</string>
+   </property>
+   <property name="shortcut">
+    <string>F1</string>
    </property>
   </action>
   <action name="actionAbout">
@@ -347,6 +356,12 @@
   <action name="refresh_action">
    <property name="text">
     <string>รีเฟรช</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
+   </property>
+   <property name="shortcutVisibleInContextMenu">
+    <bool>true</bool>
    </property>
   </action>
  </widget>

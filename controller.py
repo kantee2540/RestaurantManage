@@ -83,7 +83,7 @@ class MainPage(QtWidgets.QMainWindow):
         self.row_value = []
 
         for i in self.values:
-            sub_value = [i["table_name"], i["person"], i["restaurant_name"]]
+            sub_value = [i["table_name"], i["person"], i["in_time"], "N/A", i["price"]]
             self.row_value.append(sub_value)
 
         for value in self.row_value:
