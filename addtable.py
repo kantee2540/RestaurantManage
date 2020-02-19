@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'add_menu.ui'
+# Form implementation generated from reading ui file 'addtable.ui'
 #
 # Created by: PyQt5 UI code generator 5.14.1
 #

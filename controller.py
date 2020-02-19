@@ -6,7 +6,8 @@ from PyQt5 import QtWidgets, QtGui, QtCore
 import main
 import register
 import login
-import addmenu
+import addtable
+import menu
 
 import data_controller
 
@@ -57,12 +58,16 @@ class MainPage(QtWidgets.QMainWindow):
         self.ui.actionQuit.triggered.connect(self.exit_app)
         self.ui.addmenu_action.triggered.connect(self.click_add_menu)
         self.ui.refresh_action.triggered.connect(self.table_manage)
+        self.ui.actionMenu.triggered.connect(self.click_menu)
 
         self.ui.add_table_button.clicked.connect(self.click_add_menu)
 
     def click_add_menu(self):
         addmenu_page.setWindowModality(QtCore.Qt.ApplicationModal)
         addmenu_page.show()
+
+    def click_menu(self):
+        menu_page.show()
 
     def sign_out(self):
         self.hide()
@@ -102,15 +107,29 @@ class MainPage(QtWidgets.QMainWindow):
             elif q == 1:
                 person_text = "จำนวนคน : {}".format(i)
                 self.ui.person.setText(person_text)
+            elif q == 2:
+                in_time = "เวลาที่เข้า : {}".format(i)
+                self.ui.timein.setText(in_time)
 
     def exit_app(self):
         QtWidgets.qApp.exit()
 
 
+class MenuDialog(QtWidgets.QDialog):
+    def __init__(self, parent=None):
+        super(MenuDialog, self).__init__(parent)
+        self.ui = menu.Ui_Dialog()
+        self.ui.setupUi(self)
+        table_header = ["ชื่ออาหาร", "ประเภท", "ราคา"]
+        self.model = QtGui.QStandardItemModel()
+        self.ui.tableView.setModel(self.model)
+        self.model.setHorizontalHeaderLabels(table_header)
+
+
 class AddMenuPage(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(AddMenuPage, self).__init__(parent)
-        self.ui = addmenu.Ui_MainWindow()
+        self.ui = addtable.Ui_MainWindow()
         self.ui.setupUi(self)
         self.setting = QtCore.QSettings('config', 'restaurant')
         self.ui.add_table_button.clicked.connect(self.add_table)
@@ -155,6 +174,6 @@ if __name__ == "__main__":
     main_page = MainPage()
     register_page = RegisterPage()
     addmenu_page = AddMenuPage()
-
+    menu_page = MenuDialog()
     login_page.show()
     sys.exit(app.exec_())
