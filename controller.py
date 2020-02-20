@@ -8,6 +8,7 @@ import register
 import login
 import addtable
 import menu
+import addmenu
 
 import data_controller
 
@@ -56,18 +57,22 @@ class MainPage(QtWidgets.QMainWindow):
 
         self.ui.actionSignout.triggered.connect(self.sign_out)
         self.ui.actionQuit.triggered.connect(self.exit_app)
-        self.ui.addmenu_action.triggered.connect(self.click_add_menu)
+        self.ui.addmenu_action.triggered.connect(self.click_add_table)
         self.ui.refresh_action.triggered.connect(self.table_manage)
         self.ui.actionMenu.triggered.connect(self.click_menu)
+        self.ui.actionAdd_Menu.triggered.connect(self.click_add_menu)
 
-        self.ui.add_table_button.clicked.connect(self.click_add_menu)
+        self.ui.add_table_button.clicked.connect(self.click_add_table)
 
-    def click_add_menu(self):
-        addmenu_page.setWindowModality(QtCore.Qt.ApplicationModal)
-        addmenu_page.show()
+    def click_add_table(self):
+        add_table_page.setWindowModality(QtCore.Qt.ApplicationModal)
+        add_table_page.show()
 
     def click_menu(self):
         menu_page.show()
+
+    def click_add_menu(self):
+        add_menu_page.show()
 
     def sign_out(self):
         self.hide()
@@ -126,9 +131,19 @@ class MenuDialog(QtWidgets.QDialog):
         self.model.setHorizontalHeaderLabels(table_header)
 
 
-class AddMenuPage(QtWidgets.QMainWindow):
+class AddMenuDialog(QtWidgets.QDialog):
     def __init__(self, parent=None):
-        super(AddMenuPage, self).__init__(parent)
+        super(AddMenuDialog, self).__init__(parent)
+        self.ui = addmenu.Ui_Dialog()
+        self.ui.setupUi(self)
+        self.ui.cancel_button.clicked.connect(self.click_cancel)
+
+    def click_cancel(self):
+        self.hide()
+
+class AddTablePage(QtWidgets.QMainWindow):
+    def __init__(self, parent=None):
+        super(AddTablePage, self).__init__(parent)
         self.ui = addtable.Ui_MainWindow()
         self.ui.setupUi(self)
         self.setting = QtCore.QSettings('config', 'restaurant')
@@ -173,7 +188,9 @@ if __name__ == "__main__":
     login_page = LoginPage()
     main_page = MainPage()
     register_page = RegisterPage()
-    addmenu_page = AddMenuPage()
+    add_table_page = AddTablePage()
     menu_page = MenuDialog()
+    add_menu_page = AddMenuDialog()
+
     login_page.show()
     sys.exit(app.exec_())
