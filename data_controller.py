@@ -110,6 +110,24 @@ def get_table_data(rest_name):
         message_box("Error", "Error message: \"{}\" Please Contact ch.kantee_st@tni.ac.th".format(e))
 
 
+def add_menu(menu_name, price, category, restaurant):
+    try:
+        client = get_database_client()
+        db = client.get_database(projectDb)
+        data = {"menu_name": menu_name,
+                "price": price,
+                "category": category,
+                "restaurant_name": restaurant}
+        am = db.Menu.insert_one(data)
+        if am:
+            return True
+        else:
+            return False
+
+    except Exception as e:
+        message_box("Error", "Error message: \"{}\" Please Contact ch.kantee_st@tni.ac.th".format(e))
+
+
 def clear_lineedit(self):
     self.ui.rest_edit.clear()
     self.ui.user_edit.clear()

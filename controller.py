@@ -69,9 +69,11 @@ class MainPage(QtWidgets.QMainWindow):
         add_table_page.show()
 
     def click_menu(self):
+        menu_page.setWindowModality(QtCore.Qt.ApplicationModal)
         menu_page.show()
 
     def click_add_menu(self):
+        add_menu_page.setWindowModality(QtCore.Qt.ApplicationModal)
         add_menu_page.show()
 
     def sign_out(self):
@@ -136,10 +138,17 @@ class AddMenuDialog(QtWidgets.QDialog):
         super(AddMenuDialog, self).__init__(parent)
         self.ui = addmenu.Ui_Dialog()
         self.ui.setupUi(self)
+        self.ui.ok_button.clicked.connect(self.click_add_menu)
         self.ui.cancel_button.clicked.connect(self.click_cancel)
 
     def click_cancel(self):
         self.hide()
+
+    def click_add_menu(self):
+        menu_name = self.ui.menu_name_lineedit.text()
+        menu_category = self.ui.menu_type_comboBox.currentIndex()
+        print(menu_category)
+
 
 class AddTablePage(QtWidgets.QMainWindow):
     def __init__(self, parent=None):

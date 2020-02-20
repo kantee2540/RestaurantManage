@@ -61,7 +61,7 @@
     <string>ชื่อเมนูอาหาร</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit">
+  <widget class="QLineEdit" name="menu_name_lineedit">
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -97,7 +97,7 @@
     <string>ประเภทเมนูอาหาร</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="comboBox">
+  <widget class="QComboBox" name="menu_type_comboBox">
    <property name="geometry">
     <rect>
      <x>20</x>
