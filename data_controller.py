@@ -128,6 +128,18 @@ def add_menu(menu_name, price, category, restaurant):
         message_box("Error", "Error message: \"{}\" Please Contact ch.kantee_st@tni.ac.th".format(e))
 
 
+def get_menu_data(rest_name):
+    try:
+        client = get_database_client()
+        db = client.get_database(projectDb)
+        data = db.Menu.find({"restaurant_name": rest_name})
+        if data:
+            return data
+
+    except Exception as e:
+        message_box("Error", "Error message: \"{}\" Please Contact ch.kantee_st@tni.ac.th".format(e))
+
+
 def clear_lineedit(self):
     self.ui.rest_edit.clear()
     self.ui.user_edit.clear()

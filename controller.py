@@ -71,6 +71,7 @@ class MainPage(QtWidgets.QMainWindow):
     def click_menu(self):
         menu_page.setWindowModality(QtCore.Qt.ApplicationModal)
         menu_page.show()
+        menu_page.table_manage()
 
     def click_add_menu(self):
         add_menu_page.setWindowModality(QtCore.Qt.ApplicationModal)
@@ -127,10 +128,35 @@ class MenuDialog(QtWidgets.QDialog):
         super(MenuDialog, self).__init__(parent)
         self.ui = menu.Ui_Dialog()
         self.ui.setupUi(self)
+        self.settings = QtCore.QSettings('config', 'restaurant')
+        self.ui.add_menu_button.clicked.connect(self.click_add_menu)
+
+    def table_manage(self):
         table_header = ["ชื่ออาหาร", "ประเภท", "ราคา"]
         self.model = QtGui.QStandardItemModel()
         self.ui.tableView.setModel(self.model)
         self.model.setHorizontalHeaderLabels(table_header)
+        self.ui.tableView.setColumnWidth(0, 200)
+        self.ui.tableView.setEditTriggers(QtWidgets.QTableView.NoEditTriggers)
+        self.ui.tableView.setSelectionBehavior(QtWidgets.QTableView.SelectRows)
+
+        values = data_controller.get_menu_data(self.settings.value('rest_name'))
+        row_value = []
+
+        for i in values:
+            sub_value = [i["menu_name"], i["category"], i["price"]]
+            row_value.append(sub_value)
+
+        for value in row_value:
+            row = []
+            for item in value:
+                cell = QtGui.QStandardItem(str(item))
+                row.append(cell)
+            self.model.appendRow(row)
+
+    def click_add_menu(self):
+        add_menu_page.setWindowModality(QtCore.Qt.ApplicationModal)
+        add_menu_page.show()
 
 
 class AddMenuDialog(QtWidgets.QDialog):
@@ -138,6 +164,7 @@ class AddMenuDialog(QtWidgets.QDialog):
         super(AddMenuDialog, self).__init__(parent)
         self.ui = addmenu.Ui_Dialog()
         self.ui.setupUi(self)
+        self.setting = QtCore.QSettings('config', 'restaurant')
         self.ui.ok_button.clicked.connect(self.click_add_menu)
         self.ui.cancel_button.clicked.connect(self.click_cancel)
 
@@ -146,8 +173,15 @@ class AddMenuDialog(QtWidgets.QDialog):
 
     def click_add_menu(self):
         menu_name = self.ui.menu_name_lineedit.text()
-        menu_category = self.ui.menu_type_comboBox.currentIndex()
+        menu_category = self.ui.menu_type_comboBox.currentText()
+        price = float(self.ui.price_spinbox.text())
+        restaurant_name = self.setting.value('rest_name')
         print(menu_category)
+        if data_controller.add_menu(menu_name, price, menu_category, restaurant_name):
+            self.hide()
+            menu_page.table_manage()
+        else:
+            message_box("Error", "Cannot Add menu")
 
 
 class AddTablePage(QtWidgets.QMainWindow):

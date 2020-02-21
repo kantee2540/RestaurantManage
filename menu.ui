@@ -13,88 +13,104 @@
   <property name="windowTitle">
    <string>Food Menu</string>
   </property>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>20</y>
-     <width>281</width>
-     <height>31</height>
-    </rect>
+  <layout class="QGridLayout" name="gridLayout">
+   <property name="leftMargin">
+    <number>15</number>
    </property>
-   <property name="font">
-    <font>
-     <pointsize>16</pointsize>
-    </font>
+   <property name="topMargin">
+    <number>15</number>
    </property>
-   <property name="text">
-    <string>เมนูอาหารทั้งหมด</string>
+   <property name="rightMargin">
+    <number>15</number>
    </property>
-  </widget>
-  <widget class="QTableView" name="tableView">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>60</y>
-     <width>461</width>
-     <height>571</height>
-    </rect>
+   <property name="bottomMargin">
+    <number>15</number>
    </property>
-  </widget>
-  <widget class="QPushButton" name="remove_menu_button">
-   <property name="geometry">
-    <rect>
-     <x>360</x>
-     <y>650</y>
-     <width>120</width>
-     <height>31</height>
-    </rect>
+   <property name="verticalSpacing">
+    <number>15</number>
    </property>
-   <property name="font">
-    <font>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>ลบเมนูอาหาร</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="edit_menu_button">
-   <property name="geometry">
-    <rect>
-     <x>230</x>
-     <y>650</y>
-     <width>120</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>แก้ไขเมนูอาหาร</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="add_menu_button">
-   <property name="geometry">
-    <rect>
-     <x>100</x>
-     <y>650</y>
-     <width>120</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>เพิ่มเมนูอาหาร</string>
-   </property>
-  </widget>
+   <item row="0" column="0" colspan="2">
+    <widget class="QLabel" name="label">
+     <property name="font">
+      <font>
+       <pointsize>16</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>เมนูอาหารทั้งหมด</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" colspan="3">
+    <widget class="QTableView" name="tableView"/>
+   </item>
+   <item row="2" column="0">
+    <widget class="QPushButton" name="add_menu_button">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>35</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>35</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>เพิ่มเมนูอาหาร</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QPushButton" name="edit_menu_button">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>35</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>แก้ไขเมนูอาหาร</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="2">
+    <widget class="QPushButton" name="remove_menu_button">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>35</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>35</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>ลบเมนูอาหาร</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>
