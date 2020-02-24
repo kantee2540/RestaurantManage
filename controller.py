@@ -9,6 +9,7 @@ import login
 import addtable
 import menu
 import addmenu
+import editmenu
 
 import data_controller
 
@@ -141,6 +142,7 @@ class MenuDialog(QtWidgets.QDialog):
         self.settings = QtCore.QSettings('config', 'restaurant')
         self.ui.add_menu_button.clicked.connect(self.click_add_menu)
         self.ui.remove_menu_button.clicked.connect(self.click_remove_menu)
+        self.ui.edit_menu_button.clicked.connect(self.click_edit_menu)
 
     def table_manage(self):
         table_header = ["ชื่ออาหาร", "ประเภท", "ราคา"]
@@ -187,6 +189,23 @@ class MenuDialog(QtWidgets.QDialog):
         add_menu_page.setWindowModality(QtCore.Qt.ApplicationModal)
         add_menu_page.show()
 
+    def click_edit_menu(self):
+        row = self.ui.tableView.currentIndex().row()
+        edit_menu = self.row_value[row][0]
+        edit_type = self.row_value[row][1]
+        edit_price = self.row_value[row][2]
+
+        edit_menu_page.old_menu = edit_menu
+        edit_menu_page.setWindowModality(QtCore.Qt.ApplicationModal)
+        edit_menu_page.ui.menu_name_lineedit.setText(edit_menu)
+        if edit_type == "อาหารจานเดี่ยว":
+            edit_menu_page.ui.menu_type_comboBox.setCurrentIndex(1)
+        else:
+            edit_menu_page.ui.menu_type_comboBox.setCurrentIndex(0)
+
+        edit_menu_page.ui.price_spinbox.setValue(edit_price)
+        edit_menu_page.show()
+
 
 class AddMenuDialog(QtWidgets.QDialog):
     def __init__(self, parent=None):
@@ -211,6 +230,29 @@ class AddMenuDialog(QtWidgets.QDialog):
             menu_page.table_manage()
         else:
             message_box("Error", "Cannot Add menu")
+
+
+class EditMenuDialog(QtWidgets.QDialog):
+    def __init__(self, parent=None):
+        super(EditMenuDialog, self).__init__(parent)
+        self.ui = editmenu.Ui_Dialog()
+        self.ui.setupUi(self)
+        self.old_menu = ""
+        self.ui.ok_button.clicked.connect(self.click_update)
+        self.ui.cancel_button.clicked.connect(self.click_cancel)
+
+    def click_update(self):
+        menu_name = self.ui.menu_name_lineedit.text()
+        price = float(self.ui.price_spinbox.text())
+        menu_category = self.ui.menu_type_comboBox.currentText()
+        if data_controller.update_menu(self.old_menu, menu_name, price, menu_category):
+            self.hide()
+            menu_page.table_manage()
+        else:
+            message_box("Error", "Cannot Update menu")
+
+    def click_cancel(self):
+        self.hide()
 
 
 class AddTablePage(QtWidgets.QMainWindow):
@@ -287,6 +329,7 @@ if __name__ == "__main__":
     add_table_page = AddTablePage()
     menu_page = MenuDialog()
     add_menu_page = AddMenuDialog()
+    edit_menu_page = EditMenuDialog()
 
     login_page.show()
     sys.exit(app.exec_())

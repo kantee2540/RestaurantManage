@@ -155,6 +155,23 @@ def remove_menu(menu_name):
         message_box("Error", "Error message: \"{}\" Please Contact ch.kantee_st@tni.ac.th".format(e))
 
 
+def update_menu(old_menu_name, menu_name, price, category):
+    try:
+        client = get_database_client()
+        db = client.get_database(projectDb)
+        data = db.Menu.update({"menu_name": old_menu_name},
+                              {"$set": {"menu_name": menu_name,
+                                        "price": price,
+                                        "category": category}})
+        if data:
+            return True
+        else:
+            return False
+
+    except Exception as e:
+        message_box("Error", "Error message: \"{}\" Please Contact ch.kantee_st@tni.ac.th".format(e))
+
+
 def clear_lineedit(self):
     self.ui.rest_edit.clear()
     self.ui.user_edit.clear()
