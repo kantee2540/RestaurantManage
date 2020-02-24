@@ -5,6 +5,7 @@ import datetime
 
 projectDb = "Restaurant"
 
+
 def get_database_client():
     return pymongo.MongoClient("mongodb+srv://kantee2540:K%61n%742540@cluster0-ww6d1.mongodb.net/test?retryWrites=true&w=majority")
 
@@ -135,6 +136,20 @@ def get_menu_data(rest_name):
         data = db.Menu.find({"restaurant_name": rest_name})
         if data:
             return data
+
+    except Exception as e:
+        message_box("Error", "Error message: \"{}\" Please Contact ch.kantee_st@tni.ac.th".format(e))
+
+
+def remove_menu(menu_name):
+    try:
+        client = get_database_client()
+        db = client.get_database(projectDb)
+        dm = db.Menu.delete_one({"menu_name": menu_name})
+        if dm:
+            return True
+        else:
+            return False
 
     except Exception as e:
         message_box("Error", "Error message: \"{}\" Please Contact ch.kantee_st@tni.ac.th".format(e))

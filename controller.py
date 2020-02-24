@@ -61,8 +61,10 @@ class MainPage(QtWidgets.QMainWindow):
         self.ui.refresh_action.triggered.connect(self.table_manage)
         self.ui.actionMenu.triggered.connect(self.click_menu)
         self.ui.actionAdd_Menu.triggered.connect(self.click_add_menu)
-
         self.ui.add_table_button.clicked.connect(self.click_add_table)
+
+        self.ui.tableView.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.ui.tableView.customContextMenuRequested.connect(self.rightClickEvent)
 
     def click_add_table(self):
         add_table_page.setWindowModality(QtCore.Qt.ApplicationModal)
@@ -81,6 +83,15 @@ class MainPage(QtWidgets.QMainWindow):
         self.hide()
         login_page.show()
 
+    def rightClickEvent(self, event):
+        menu = QtWidgets.QMenu(self)
+        cancel_action = QtWidgets.QAction("รีเฟรช", self)
+        menu.addAction(cancel_action)
+        action = menu.exec_(self.ui.tableView.viewport().mapToGlobal(event))
+        if action == cancel_action:
+            self.table_manage()
+
+
     def table_manage(self):
         table_header = ["ชื่อโต๊ะ", "จำนวนคน", "เวลาเข้า", "เวลาที่เหลือ", "ราคามื้อนี้"]
         self.model = QtGui.QStandardItemModel()
@@ -89,7 +100,6 @@ class MainPage(QtWidgets.QMainWindow):
         self.ui.tableView.setColumnWidth(0, 160)
         self.ui.tableView.setEditTriggers(QtWidgets.QTableView.NoEditTriggers)
         self.ui.tableView.setSelectionBehavior(QtWidgets.QTableView.SelectRows)
-
         self.ui.tableView.clicked.connect(self.selected_item_tableview)
 
         self.values = data_controller.get_table_data(self.settings.value('rest_name'))
@@ -130,6 +140,7 @@ class MenuDialog(QtWidgets.QDialog):
         self.ui.setupUi(self)
         self.settings = QtCore.QSettings('config', 'restaurant')
         self.ui.add_menu_button.clicked.connect(self.click_add_menu)
+        self.ui.remove_menu_button.clicked.connect(self.click_remove_menu)
 
     def table_manage(self):
         table_header = ["ชื่ออาหาร", "ประเภท", "ราคา"]
@@ -140,19 +151,37 @@ class MenuDialog(QtWidgets.QDialog):
         self.ui.tableView.setEditTriggers(QtWidgets.QTableView.NoEditTriggers)
         self.ui.tableView.setSelectionBehavior(QtWidgets.QTableView.SelectRows)
 
-        values = data_controller.get_menu_data(self.settings.value('rest_name'))
-        row_value = []
+        self.values = data_controller.get_menu_data(self.settings.value('rest_name'))
+        self.row_value = []
 
-        for i in values:
+        for i in self.values:
             sub_value = [i["menu_name"], i["category"], i["price"]]
-            row_value.append(sub_value)
+            self.row_value.append(sub_value)
 
-        for value in row_value:
+        for value in self.row_value:
             row = []
             for item in value:
                 cell = QtGui.QStandardItem(str(item))
                 row.append(cell)
             self.model.appendRow(row)
+
+
+    def click_remove_menu(self):
+        row = self.ui.tableView.currentIndex().row()
+        remove_menu = self.row_value[row][0]
+        str = "คุณต้องการลบเมนูอาหาร {} หรือไม่".format(remove_menu)
+        message = QtWidgets.QMessageBox.question(self, "ลบเมนูอาหาร", str,
+                                                 QtWidgets.QMessageBox.Yes,
+                                                 QtWidgets.QMessageBox.No)
+        if message == QtWidgets.QMessageBox.Yes:
+            self.remove_menu(remove_menu)
+
+    def remove_menu(self, remove_menu):
+        if data_controller.remove_menu(remove_menu):
+            print("Menu : {} has removed".format(remove_menu))
+            self.table_manage()
+        else:
+            print("Remove failed!")
 
     def click_add_menu(self):
         add_menu_page.setWindowModality(QtCore.Qt.ApplicationModal)
@@ -191,6 +220,30 @@ class AddTablePage(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
         self.setting = QtCore.QSettings('config', 'restaurant')
         self.ui.add_table_button.clicked.connect(self.add_table)
+        self.table_manage()
+
+    def table_manage(self):
+        table_header = ["ชื่ออาหาร", "ประเภท", "ราคา"]
+        self.model = QtGui.QStandardItemModel()
+        self.ui.menu_table.setModel(self.model)
+        self.model.setHorizontalHeaderLabels(table_header)
+        self.ui.menu_table.setColumnWidth(0, 200)
+        self.ui.menu_table.setEditTriggers(QtWidgets.QTableView.NoEditTriggers)
+        self.ui.menu_table.setSelectionBehavior(QtWidgets.QTableView.SelectRows)
+
+        values = data_controller.get_menu_data(self.setting.value('rest_name'))
+        row_value = []
+
+        for i in values:
+            sub_value = [i["menu_name"], i["category"], i["price"]]
+            row_value.append(sub_value)
+
+        for value in row_value:
+            row = []
+            for item in value:
+                cell = QtGui.QStandardItem(str(item))
+                row.append(cell)
+            self.model.appendRow(row)
 
     def add_table(self):
         table_name = self.ui.table_name_lineedit.text()
