@@ -70,6 +70,7 @@ class MainPage(QtWidgets.QMainWindow):
     def click_add_table(self):
         add_table_page.setWindowModality(QtCore.Qt.ApplicationModal)
         add_table_page.show()
+        add_table_page.table_manage()
 
     def click_menu(self):
         menu_page.setWindowModality(QtCore.Qt.ApplicationModal)
@@ -92,7 +93,6 @@ class MainPage(QtWidgets.QMainWindow):
         if action == cancel_action:
             self.table_manage()
 
-
     def table_manage(self):
         table_header = ["ชื่อโต๊ะ", "จำนวนคน", "เวลาเข้า", "เวลาที่เหลือ", "ราคามื้อนี้"]
         self.model = QtGui.QStandardItemModel()
@@ -105,9 +105,15 @@ class MainPage(QtWidgets.QMainWindow):
 
         self.values = data_controller.get_table_data(self.settings.value('rest_name'))
         self.row_value = []
+        self.count_menu = []
 
         for i in self.values:
-            sub_value = [i["table_name"], i["person"], i["in_time"], "N/A", i["price"]]
+            all_quantity = 0
+            for j in i["menu_set"]:
+                all_quantity += j["quantity"]
+            self.count_menu.append(int(all_quantity))
+
+            sub_value = [i["table_name"], i["person"], i["in_time"],  "N/A", i["price"]]
             self.row_value.append(sub_value)
 
         for value in self.row_value:
@@ -129,6 +135,12 @@ class MainPage(QtWidgets.QMainWindow):
             elif q == 2:
                 in_time = "เวลาที่เข้า : {}".format(i)
                 self.ui.timein.setText(in_time)
+            elif q == 4:
+                total_txt = "ราคาอาหารมื้อนี้ : {}".format(i)
+                self.ui.total_price.setText(total_txt)
+
+        order_text = "จำนวนเมนูอาหาร : {}".format(self.count_menu[row])
+        self.ui.order_num.setText(order_text)
 
     def exit_app(self):
         QtWidgets.qApp.exit()
@@ -166,7 +178,6 @@ class MenuDialog(QtWidgets.QDialog):
                 cell = QtGui.QStandardItem(str(item))
                 row.append(cell)
             self.model.appendRow(row)
-
 
     def click_remove_menu(self):
         row = self.ui.tableView.currentIndex().row()
@@ -260,44 +271,107 @@ class AddTablePage(QtWidgets.QMainWindow):
         super(AddTablePage, self).__init__(parent)
         self.ui = addtable.Ui_MainWindow()
         self.ui.setupUi(self)
+
         self.setting = QtCore.QSettings('config', 'restaurant')
         self.ui.add_table_button.clicked.connect(self.add_table)
-        self.table_manage()
+        self.ui.cancel_button.clicked.connect(self.click_cancel)
+        self.ui.add_menu_button.clicked.connect(self.click_add_menu)
 
     def table_manage(self):
-        table_header = ["ชื่ออาหาร", "ประเภท", "ราคา"]
-        self.model = QtGui.QStandardItemModel()
+        table_header = ["ชื่ออาหาร", "ราคา"]
+        result_table_header = ["ชื่ออาหาร", "จำนวน", "ราคา", "ลบ"]
+        self.model = QtGui.QStandardItemModel(self)
+        self.model_result = QtGui.QStandardItemModel(self)
         self.ui.menu_table.setModel(self.model)
+        self.ui.result_table.setModel(self.model_result)
         self.model.setHorizontalHeaderLabels(table_header)
-        self.ui.menu_table.setColumnWidth(0, 200)
+        self.model_result.setHorizontalHeaderLabels(result_table_header)
         self.ui.menu_table.setEditTriggers(QtWidgets.QTableView.NoEditTriggers)
         self.ui.menu_table.setSelectionBehavior(QtWidgets.QTableView.SelectRows)
+        self.ui.result_table.setEditTriggers(QtWidgets.QTableView.NoEditTriggers)
+        self.ui.result_table.setSelectionBehavior(QtWidgets.QTableView.SelectRows)
+        self.ui.menu_table.setColumnWidth(0, 130)
+        self.ui.result_table.setColumnWidth(3, 10)
 
-        values = data_controller.get_menu_data(self.setting.value('rest_name'))
-        row_value = []
+        self.selected_menu = []
+        #self.model.itemChanged.connect(self.onCellChanged)
 
-        for i in values:
-            sub_value = [i["menu_name"], i["category"], i["price"]]
-            row_value.append(sub_value)
+        self.values = data_controller.get_menu_data(self.setting.value('rest_name'))
+        self.row_value = []
 
-        for value in row_value:
+        for i in self.values:
+            sub_value = [i["menu_name"], i["price"]]
+            self.row_value.append(sub_value)
+
+        for value in self.row_value:
             row = []
-            for item in value:
+            for x, item in enumerate(value):
                 cell = QtGui.QStandardItem(str(item))
+                # if x == 0:
+                #     cell.setCheckable(True)
                 row.append(cell)
             self.model.appendRow(row)
 
+    def click_add_menu(self):
+        row = self.ui.menu_table.currentIndex().row()
+        data = self.row_value[row]
+        quantity = float(self.ui.quantity_spinBox.text())
+        data_dict = {"menu_name": data[0], "quantity": quantity, "price": data[1] * quantity}
+
+        menu_item = QtGui.QStandardItem(str(data_dict["menu_name"]))
+        price_item = QtGui.QStandardItem(str(data_dict["quantity"]))
+        quantity_item = QtGui.QStandardItem(str(data_dict["price"]))
+
+        bk = QtGui.QStandardItem(str(""))
+        self.model_result.appendRow([menu_item, price_item, quantity_item, bk])
+        for i in range(self.model_result.rowCount()):
+            btn = QtWidgets.QPushButton("ลบ")
+            self.ui.result_table.setIndexWidget(self.model_result.index(i, 3), btn)
+            btn.clicked.connect(self.click_remove)
+
+        self.selected_menu.append(data_dict)
+
+    def click_remove(self):
+        button = QtWidgets.qApp.focusWidget()
+        index = self.ui.result_table.indexAt(button.pos())
+        self.selected_menu.pop(index.row())
+        self.model_result.removeRow(index.row())
+
+    def click_cancel(self):
+        self.hide()
+
+    # def onCellChanged(self, item):
+    #     row = item.row()
+    #     state = item.checkState()
+    #
+    #     if state == 2:
+    #         data = self.row_value[row]
+    #         menu_dict = {"menu_name": data[0], "category_type": data[1], "price": data[2]}
+    #         self.selected_menu.append(menu_dict)
+    #     else:
+    #         deselect_data = self.row_value[row][0]
+    #         for x, i in enumerate(self.selected_menu):
+    #             if deselect_data == i["menu_name"]:
+    #                 self.selected_menu.pop(x)
+    #                 break
+    #
+    #     print(self.selected_menu)
+
     def add_table(self):
-        table_name = self.ui.table_name_lineedit.text()
-        person = self.ui.person_spinBox.text()
-        restaurant = self.setting.value("rest_name")
-        if data_controller.add_table(table_name, person, restaurant):
-            self.hide()
-            main_page.table_manage()
-            self.ui.table_name_lineedit.clear()
-            self.ui.person_spinBox.setValue(1)
+        if self.ui.table_name_lineedit.text() != "":
+            table_name = self.ui.table_name_lineedit.text()
+            person = self.ui.person_spinBox.text()
+            restaurant = self.setting.value("rest_name")
+            menu_set = self.selected_menu
+            if data_controller.add_table(table_name, person, menu_set, restaurant):
+                self.hide()
+                main_page.table_manage()
+                self.ui.table_name_lineedit.clear()
+                self.ui.person_spinBox.setValue(1)
+            else:
+                message_box("Error", "Cannot Insert your information to database")
         else:
-            message_box("Error", "Cannot Insert your information to database")
+            message_box("กรอกให้ครบ", "กรุณาใส่ชื่อหรือเลขโต๊ะ")
 
 
 class RegisterPage(QtWidgets.QMainWindow):

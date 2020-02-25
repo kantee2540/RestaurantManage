@@ -78,16 +78,21 @@ def register_process(self):
         message_box("Error", "Error message : \"{}\"Please Contact ch.kantee_st@tni.ac.th".format(e))
 
 
-def add_table(table_name, person, restaurant):
+def add_table(table_name, person, menu_set, restaurant):
     try:
         client = get_database_client()
         db = client.get_database(projectDb)
         current_time = datetime.datetime.now().strftime("%X")
+        total_price = 0
+        for i in menu_set:
+            price = i["price"] * i["quantity"]
+            total_price += price
 
         data = {"table_name": table_name,
                 "person": person,
                 "in_time": current_time,
-                "price": "N/A",
+                "price": total_price,
+                "menu_set": menu_set,
                 "restaurant_name": restaurant}
         at = db.Table.insert_one(data)
         if at:

@@ -6,20 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>550</width>
-    <height>700</height>
+    <width>735</width>
+    <height>782</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>550</width>
-    <height>700</height>
+    <width>735</width>
+    <height>782</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>550</width>
-    <height>700</height>
+    <width>735</width>
+    <height>782</height>
    </size>
   </property>
   <property name="font">
@@ -47,6 +47,49 @@
     <property name="verticalSpacing">
      <number>13</number>
     </property>
+    <item row="8" column="2" rowspan="2">
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="2" column="1">
+       <widget class="QPushButton" name="cancel_button">
+        <property name="maximumSize">
+         <size>
+          <width>173</width>
+          <height>29</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>ยกเลิก</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QPushButton" name="add_menu_button">
+        <property name="maximumSize">
+         <size>
+          <width>173</width>
+          <height>29</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>เพิ่มเมนู</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2" rowspan="3">
+       <widget class="QPushButton" name="add_table_button">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>60</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>เพิ่มโต๊ะ</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
     <item row="0" column="0">
      <widget class="QLabel" name="label">
       <property name="font">
@@ -59,7 +102,7 @@
       </property>
      </widget>
     </item>
-    <item row="1" column="0" colspan="2">
+    <item row="1" column="0" colspan="3">
      <widget class="QLineEdit" name="table_name_lineedit">
       <property name="minimumSize">
        <size>
@@ -83,19 +126,38 @@
       </property>
      </widget>
     </item>
-    <item row="2" column="0">
-     <widget class="QLabel" name="label_3">
+    <item row="4" column="0">
+     <widget class="QLabel" name="label_2">
       <property name="font">
        <font>
         <pointsize>10</pointsize>
        </font>
       </property>
       <property name="text">
-       <string>จำนวนคน</string>
+       <string>เมนูอาหาร</string>
       </property>
      </widget>
     </item>
-    <item row="3" column="0" colspan="2">
+    <item row="5" column="2">
+     <widget class="QTableView" name="result_table"/>
+    </item>
+    <item row="5" column="0">
+     <widget class="QTableView" name="menu_table">
+      <property name="minimumSize">
+       <size>
+        <width>250</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>300</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0" colspan="3">
      <widget class="QSpinBox" name="person_spinBox">
       <property name="minimumSize">
        <size>
@@ -117,39 +179,41 @@
       </property>
      </widget>
     </item>
-    <item row="4" column="0">
-     <widget class="QLabel" name="label_2">
+    <item row="2" column="0">
+     <widget class="QLabel" name="label_3">
       <property name="font">
        <font>
         <pointsize>10</pointsize>
        </font>
       </property>
       <property name="text">
-       <string>เมนูอาหาร</string>
+       <string>จำนวนคน</string>
       </property>
      </widget>
     </item>
-    <item row="5" column="0" colspan="2">
-     <widget class="QTableView" name="menu_table"/>
-    </item>
-    <item row="6" column="0" colspan="2">
-     <widget class="QPushButton" name="add_table_button">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>35</height>
-       </size>
+    <item row="8" column="0">
+     <layout class="QFormLayout" name="formLayout">
+      <property name="topMargin">
+       <number>10</number>
       </property>
-      <property name="maximumSize">
-       <size>
-        <width>16777215</width>
-        <height>35</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>เพิ่มโต๊ะ</string>
-      </property>
-     </widget>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>จำนวนจานที่ต้องการ :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QSpinBox" name="quantity_spinBox">
+        <property name="locale">
+         <locale language="English" country="UnitedStates"/>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>
@@ -158,7 +222,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>550</width>
+     <width>735</width>
      <height>21</height>
     </rect>
    </property>
