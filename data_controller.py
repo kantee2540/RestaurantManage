@@ -85,7 +85,7 @@ def add_table(table_name, person, menu_set, restaurant):
         current_time = datetime.datetime.now().strftime("%X")
         total_price = 0
         for i in menu_set:
-            price = i["price"] * i["quantity"]
+            price = i["price"]
             total_price += price
 
         data = {"table_name": table_name,
