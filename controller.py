@@ -10,6 +10,7 @@ import addtable
 import menu
 import addmenu
 import editmenu
+import edit_rest_info
 
 import data_controller
 
@@ -62,6 +63,7 @@ class MainPage(QtWidgets.QMainWindow):
         self.ui.refresh_action.triggered.connect(self.table_manage)
         self.ui.actionMenu.triggered.connect(self.click_menu)
         self.ui.actionAdd_Menu.triggered.connect(self.click_add_menu)
+        self.ui.actionEditRest.triggered.connect(self.click_edit_rest)
         self.ui.add_table_button.clicked.connect(self.click_add_table)
 
         self.ui.tableView.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
@@ -80,6 +82,11 @@ class MainPage(QtWidgets.QMainWindow):
     def click_add_menu(self):
         add_menu_page.setWindowModality(QtCore.Qt.ApplicationModal)
         add_menu_page.show()
+
+    def click_edit_rest(self):
+        edit_rest.setWindowModality(QtCore.Qt.ApplicationModal)
+        edit_rest.show()
+        edit_rest.set_rest_name()
 
     def sign_out(self):
         self.hide()
@@ -394,6 +401,46 @@ class RegisterPage(QtWidgets.QMainWindow):
             self.ui.error_label.show()
 
 
+class EditRestaurantInfo(QtWidgets.QDialog):
+    def __init__(self, parent=None):
+        super(EditRestaurantInfo, self).__init__(parent)
+        self.ui = edit_rest_info.Ui_Dialog()
+        self.setting = QtCore.QSettings('config', 'restaurant')
+        self.ui.setupUi(self)
+        self.ui.ok_button.clicked.connect(self.to_confirm_update)
+        self.ui.cancel_button.clicked.connect(self.click_cancel)
+
+    def set_rest_name(self):
+        old_name = self.setting.value('rest_name')
+        self.ui.old_rest_name.setText(old_name)
+
+    def to_confirm_update(self):
+        old_name = self.setting.value('rest_name')
+        new_name = self.ui.new_rest_name_lineedit.text()
+        mes_str = "คุณต้องการเปลี่ยนชื่อร้าน จาก \"{}\" เป็น \"{}\" หรือไม่".format(old_name, new_name)
+        message = QtWidgets.QMessageBox.question(self, "ลบเมนูอาหาร", mes_str,
+                                                 QtWidgets.QMessageBox.Yes,
+                                                 QtWidgets.QMessageBox.No)
+        if message == QtWidgets.QMessageBox.Yes:
+            self.click_update()
+
+    def click_update(self):
+        old_name = self.setting.value('rest_name')
+        new_name = self.ui.new_rest_name_lineedit.text()
+        if data_controller.update_rest_name(old_name, new_name):
+            self.hide()
+            self.setting.setValue('rest_name', new_name)
+            main_page.ui.tableName.setText(new_name)
+            self.ui.new_rest_name_lineedit.clear()
+
+        else:
+            message_box("Error", "เกิดข้อผิดพลาดกรุณาลองอีกครั้ง")
+
+    def click_cancel(self):
+        self.hide()
+        self.ui.new_rest_name_lineedit.clear()
+
+
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     # initialize
@@ -404,6 +451,7 @@ if __name__ == "__main__":
     menu_page = MenuDialog()
     add_menu_page = AddMenuDialog()
     edit_menu_page = EditMenuDialog()
+    edit_rest = EditRestaurantInfo()
 
     login_page.show()
     sys.exit(app.exec_())

@@ -43,6 +43,22 @@ def login_authen(self):
         message_box("Error", "Error : {}".format(e))
 
 
+def update_rest_name(old_name, new_name):
+    try:
+        client = get_database_client()
+        db = client.get_database(projectDb)
+        up_user = db.User.update({"restaurant_name": old_name}, {"$set": {"restaurant_name": new_name}})
+        up_table = db.Table.update_many({"restaurant_name": old_name}, {"$set": {"restaurant_name": new_name}})
+        up_menu = db.Menu.update_many({"restaurant_name": old_name}, {"$set": {"restaurant_name": new_name}})
+        if up_user and up_table and up_menu:
+            return True
+        else:
+            return False
+
+    except Exception as e:
+        message_box("Error", "Error message : \"{}\"Please Contact ch.kantee_st@tni.ac.th".format(e))
+
+
 def get_user_detail(username):
     try:
         client = get_database_client()
