@@ -350,6 +350,7 @@ class AddTablePage(QtWidgets.QMainWindow):
 
     def click_add_menu(self):
         row = self.ui.menu_table.currentIndex().row()
+        last_row = self.model_result.rowCount()
         data = self.row_value[row]
         quantity = float(self.ui.quantity_spinBox.text())
         data_dict = {"menu_name": data[0], "quantity": quantity, "price": data[1] * quantity}
@@ -360,10 +361,10 @@ class AddTablePage(QtWidgets.QMainWindow):
 
         bk = QtGui.QStandardItem(str(""))
         self.model_result.appendRow([menu_item, quantity_item, price_item, bk])
-        for i in range(self.model_result.rowCount()):
-            btn = QtWidgets.QPushButton("ลบ")
-            self.ui.result_table.setIndexWidget(self.model_result.index(i, 3), btn)
-            btn.clicked.connect(self.click_remove)
+
+        btn = QtWidgets.QPushButton("ลบ")
+        self.ui.result_table.setIndexWidget(self.model_result.index(last_row, 3), btn)
+        btn.clicked.connect(self.click_remove)
 
         self.selected_menu.append(data_dict)
 
