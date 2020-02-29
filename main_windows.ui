@@ -339,6 +339,9 @@
       </item>
       <item>
        <widget class="QPushButton" name="cancel_button">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="minimumSize">
          <size>
           <width>0</width>
@@ -357,6 +360,9 @@
       </item>
       <item>
        <widget class="QPushButton" name="check_bill">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="minimumSize">
          <size>
           <width>0</width>
@@ -422,6 +428,8 @@
     <addaction name="actionCal"/>
     <addaction name="separator"/>
     <addaction name="refresh_action"/>
+    <addaction name="separator"/>
+    <addaction name="actionHistory"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuMenu"/>
@@ -484,6 +492,9 @@
    </property>
   </action>
   <action name="cancelmenu_action">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>ยกเลิกรายการ</string>
    </property>
@@ -510,8 +521,16 @@
    </property>
   </action>
   <action name="actionCal">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>คิดเงินรายการ</string>
+   </property>
+  </action>
+  <action name="actionHistory">
+   <property name="text">
+    <string>ประวัติลูกค้า</string>
    </property>
   </action>
  </widget>

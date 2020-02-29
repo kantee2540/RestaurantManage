@@ -109,6 +109,7 @@ def add_table(table_name, person, menu_set, restaurant):
                 "in_time": current_time,
                 "price": total_price,
                 "menu_set": menu_set,
+                "status": "A",
                 "restaurant_name": restaurant}
         at = db.Table.insert_one(data)
         if at:
@@ -121,12 +122,58 @@ def add_table(table_name, person, menu_set, restaurant):
 
 
 def get_table_data(rest_name):
+    # STATUS DEFINE
+    # A => Active
+    # T => Time 's up
+    # C => Cancelled
+    # S => Success and has paid
+    try:
+        client = get_database_client()
+        db = client.get_database(projectDb)
+        table_data = db.Table.find({"$and": [{"restaurant_name": rest_name}, {"status": "A"}]})
+        if table_data:
+            return table_data
+
+    except Exception as e:
+        message_box("Error", "Error message: \"{}\" Please Contact ch.kantee_st@tni.ac.th".format(e))
+
+
+def get_all_table_data(rest_name):
     try:
         client = get_database_client()
         db = client.get_database(projectDb)
         table_data = db.Table.find({"restaurant_name": rest_name})
         if table_data:
             return table_data
+
+    except Exception as e:
+        message_box("Error", "Error message: \"{}\" Please Contact ch.kantee_st@tni.ac.th".format(e))
+
+
+def remove_history(rest_name):
+    try:
+        client = get_database_client()
+        db = client.get_database(projectDb)
+        dht = db.Table.delete_many({"$and": [{"restaurant_name": rest_name}, {"status": {"$nin": ["A"]}}]})
+        if dht:
+            return True
+        else:
+            return False
+
+    except Exception as e:
+        message_box("Error", "Error message: \"{}\" Please Contact ch.kantee_st@tni.ac.th".format(e))
+
+
+def cancel_table_order(rest_name, table_name):
+    try:
+        client = get_database_client()
+        db = client.get_database(projectDb)
+        ct = db.Table.update({"$and": [{"table_name": table_name}, {"restaurant_name": rest_name}]},
+                             {"$set": {"status": "C"}})
+        if ct:
+            return True
+        else:
+            return False
 
     except Exception as e:
         message_box("Error", "Error message: \"{}\" Please Contact ch.kantee_st@tni.ac.th".format(e))

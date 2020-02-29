@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'main_windows.ui'
+# Form implementation generated from reading ui file 'main_Windows.ui'
 #
 # Created by: PyQt5 UI code generator 5.14.1
 #
@@ -140,6 +140,7 @@ class Ui_MainWindow(object):
         self.add_table_button.setObjectName("add_table_button")
         self.verticalLayout_2.addWidget(self.add_table_button)
         self.cancel_button = QtWidgets.QPushButton(self.centralwidget)
+        self.cancel_button.setEnabled(False)
         self.cancel_button.setMinimumSize(QtCore.QSize(0, 50))
         font = QtGui.QFont()
         font.setPointSize(12)
@@ -147,6 +148,7 @@ class Ui_MainWindow(object):
         self.cancel_button.setObjectName("cancel_button")
         self.verticalLayout_2.addWidget(self.cancel_button)
         self.check_bill = QtWidgets.QPushButton(self.centralwidget)
+        self.check_bill.setEnabled(False)
         self.check_bill.setMinimumSize(QtCore.QSize(0, 80))
         font = QtGui.QFont()
         font.setPointSize(16)
@@ -189,6 +191,7 @@ class Ui_MainWindow(object):
         self.addmenu_action = QtWidgets.QAction(MainWindow)
         self.addmenu_action.setObjectName("addmenu_action")
         self.cancelmenu_action = QtWidgets.QAction(MainWindow)
+        self.cancelmenu_action.setEnabled(False)
         self.cancelmenu_action.setObjectName("cancelmenu_action")
         self.refresh_action = QtWidgets.QAction(MainWindow)
         self.refresh_action.setShortcutVisibleInContextMenu(True)
@@ -198,7 +201,10 @@ class Ui_MainWindow(object):
         self.actionMenu = QtWidgets.QAction(MainWindow)
         self.actionMenu.setObjectName("actionMenu")
         self.actionCal = QtWidgets.QAction(MainWindow)
+        self.actionCal.setEnabled(False)
         self.actionCal.setObjectName("actionCal")
+        self.actionHistory = QtWidgets.QAction(MainWindow)
+        self.actionHistory.setObjectName("actionHistory")
         self.menuFile.addAction(self.actionSettings)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionEditRest)
@@ -216,6 +222,8 @@ class Ui_MainWindow(object):
         self.menuTable.addAction(self.actionCal)
         self.menuTable.addSeparator()
         self.menuTable.addAction(self.refresh_action)
+        self.menuTable.addSeparator()
+        self.menuTable.addAction(self.actionHistory)
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuMenu.menuAction())
         self.menubar.addAction(self.menuTable.menuAction())
@@ -260,3 +268,4 @@ class Ui_MainWindow(object):
         self.actionEditRest.setText(_translate("MainWindow", "แก้ข้อมูลร้าน"))
         self.actionMenu.setText(_translate("MainWindow", "เมนูอาหาร"))
         self.actionCal.setText(_translate("MainWindow", "คิดเงินรายการ"))
+        self.actionHistory.setText(_translate("MainWindow", "ประวัติลูกค้า"))
