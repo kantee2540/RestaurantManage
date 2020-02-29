@@ -332,6 +332,7 @@ class AddTablePage(QtWidgets.QMainWindow):
         self.ui.result_table.setSelectionBehavior(QtWidgets.QTableView.SelectRows)
         self.ui.menu_table.setColumnWidth(0, 130)
         self.ui.remove_button.setEnabled(False)
+        self.ui.result_table.clicked.connect(self.select_item_tableview)
         self.selected_menu = []
 
         self.values = data_controller.get_menu_data(self.setting.value('rest_name'))
@@ -350,15 +351,13 @@ class AddTablePage(QtWidgets.QMainWindow):
             self.model.appendRow(row)
 
     def click_add_menu(self):
-        self.ui.remove_button.setEnabled(True)
         row = self.ui.menu_table.currentIndex().row()
         data = self.row_value[row]
         quantity = float(self.ui.quantity_spinBox.text())
         net_price = data[1] * quantity
         data_dict = {"menu_name": data[0], "quantity": quantity, "price": net_price}
         self.total_price += net_price
-
-        self.ui.total_price_text.setText("ราคารวมทั้งหมด : {}".format(self.total_price))
+        self.set_text_totalprice()
 
         menu_item = QtGui.QStandardItem(str(data_dict["menu_name"]))
         quantity_item = QtGui.QStandardItem(str(data_dict["quantity"]))
@@ -371,10 +370,16 @@ class AddTablePage(QtWidgets.QMainWindow):
         index = self.ui.result_table.currentIndex().row()
         self.model_result.removeRow(index)
         self.total_price -= self.selected_menu[index]["price"]
-
+        self.set_text_totalprice()
         self.selected_menu.pop(index)
         if len(self.selected_menu) <= 0:
             self.ui.remove_button.setEnabled(False)
+
+    def set_text_totalprice(self):
+        self.ui.total_price_text.setText("ราคารวมทั้งหมด : {}".format(self.total_price))
+
+    def select_item_tableview(self):
+        self.ui.remove_button.setEnabled(True)
 
     def click_cancel(self):
         self.hide()
