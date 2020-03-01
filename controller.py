@@ -338,6 +338,7 @@ class AddTablePage(QtWidgets.QMainWindow):
         self.values = data_controller.get_menu_data(self.setting.value('rest_name'))
         self.row_value = []
         self.total_price = 0
+        self.set_text_totalprice()
 
         for i in self.values:
             sub_value = [i["menu_name"], i["price"]]

@@ -33,7 +33,7 @@
     <widget class="QTableView" name="tableView"/>
    </item>
    <item row="0" column="2">
-    <widget class="QPushButton" name="clear_history">
+    <widget class="QPushButton" name="clear_history_button">
      <property name="text">
       <string>ล้างประวัติ</string>
      </property>
