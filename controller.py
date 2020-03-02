@@ -12,6 +12,7 @@ import addmenu
 import editmenu
 import edit_rest_info
 import history
+import check_bill
 
 import data_controller
 
@@ -80,6 +81,7 @@ class MainPage(QtWidgets.QMainWindow):
 
         self.ui.add_table_button.clicked.connect(self.click_add_table)
         self.ui.cancel_button.clicked.connect(self.click_cancel_order)
+        self.ui.check_bill.clicked.connect(self.click_check_bill)
 
         self.ui.tableView.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.ui.tableView.customContextMenuRequested.connect(self.rightClickEvent)
@@ -110,6 +112,14 @@ class MainPage(QtWidgets.QMainWindow):
         if yes_no_message_box(self, "ยกเลิกรายการ", "คุณต้องการยกเลิกรายการหรือไม่"):
             if data_controller.cancel_table_order(rest_name, table_name):
                 self.table_manage()
+
+    def click_check_bill(self):
+        index = self.ui.tableView.currentIndex().row()
+        table_name = self.row_value[index][0]
+        rest_name = self.settings.value('rest_name')
+        check_bill_page.setWindowModality(QtCore.Qt.ApplicationModal)
+        check_bill_page.show()
+        check_bill_page.list_menu(table_name, rest_name)
 
     def click_history(self):
         history_page.setWindowModality(QtCore.Qt.ApplicationModal)
@@ -510,6 +520,45 @@ class HistoryDialog(QtWidgets.QDialog):
                 self.table_manage()
 
 
+class CheckBillDialog(QtWidgets.QDialog):
+    def __init__(self, parent=None):
+        super(CheckBillDialog, self).__init__(parent)
+        self.ui = check_bill.Ui_Dialog()
+        self.ui.setupUi(self)
+        self.ui.cancel_button.clicked.connect(self.dimiss)
+
+    def dimiss(self):
+        self.hide()
+
+    def list_menu(self, table_name, rest_name):
+        data = data_controller.get_one_table_data(rest_name, table_name)
+
+        self.ui.table_name.setText(data["table_name"])
+        self.ui.person.setText(data["person"])
+        self.ui.in_time.setText(data["in_time"])
+        self.ui.total_price_label.setText(str(data["price"]))
+
+        header = ["ชื่ออาหาร", "จำนวน", "ราคา"]
+        self.model = QtGui.QStandardItemModel()
+        self.ui.tableView.setModel(self.model)
+        self.model.setHorizontalHeaderLabels(header)
+        self.ui.tableView.setEditTriggers(QtWidgets.QTableView.NoEditTriggers)
+        self.ui.tableView.setSelectionBehavior(QtWidgets.QTableView.SelectRows)
+        self.ui.tableView.setColumnWidth(0, 100)
+
+        menu_values = []
+        for i in data["menu_set"]:
+            sub_values = [i["menu_name"], i["quantity"], i["price"]]
+            menu_values.append(sub_values)
+
+        for j in menu_values:
+            row = []
+            for k in j:
+                cell = QtGui.QStandardItem(str(k))
+                row.append(cell)
+            self.model.appendRow(row)
+
+
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     # initialize
@@ -522,6 +571,7 @@ if __name__ == "__main__":
     edit_menu_page = EditMenuDialog()
     edit_rest = EditRestaurantInfo()
     history_page = HistoryDialog()
+    check_bill_page = CheckBillDialog()
 
     login_page.show()
     sys.exit(app.exec_())

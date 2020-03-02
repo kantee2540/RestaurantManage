@@ -396,7 +396,6 @@
     <property name="title">
      <string>ไฟล์</string>
     </property>
-    <addaction name="actionSettings"/>
     <addaction name="separator"/>
     <addaction name="actionEditRest"/>
     <addaction name="actionSignout"/>
@@ -415,7 +414,6 @@
      <string>เมนูอาหาร</string>
     </property>
     <addaction name="actionAdd_Menu"/>
-    <addaction name="actionEdit_Menu"/>
     <addaction name="separator"/>
     <addaction name="actionMenu"/>
    </widget>

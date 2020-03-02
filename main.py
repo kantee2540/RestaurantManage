@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'main_Windows.ui'
+# Form implementation generated from reading ui file 'main_windows.ui'
 #
 # Created by: PyQt5 UI code generator 5.14.1
 #
@@ -205,8 +205,6 @@ class Ui_MainWindow(object):
         self.actionCal.setObjectName("actionCal")
         self.actionHistory = QtWidgets.QAction(MainWindow)
         self.actionHistory.setObjectName("actionHistory")
-        self.menuFile.addAction(self.actionSettings)
-        self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionEditRest)
         self.menuFile.addAction(self.actionSignout)
         self.menuFile.addSeparator()
@@ -214,7 +212,6 @@ class Ui_MainWindow(object):
         self.menuHelp.addAction(self.actionHelp)
         self.menuHelp.addAction(self.actionAbout)
         self.menuMenu.addAction(self.actionAdd_Menu)
-        self.menuMenu.addAction(self.actionEdit_Menu)
         self.menuMenu.addSeparator()
         self.menuMenu.addAction(self.actionMenu)
         self.menuTable.addAction(self.addmenu_action)

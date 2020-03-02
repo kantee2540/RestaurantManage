@@ -138,6 +138,18 @@ def get_table_data(rest_name):
         message_box("Error", "Error message: \"{}\" Please Contact ch.kantee_st@tni.ac.th".format(e))
 
 
+def get_one_table_data(rest_name, table_name):
+    try:
+        client = get_database_client()
+        db = client.get_database(projectDb)
+        table_data = db.Table.find_one({"$and": [{"restaurant_name": rest_name}, {"table_name": table_name}, {"status": "A"}]})
+        if table_data:
+            return table_data
+
+    except Exception as e:
+        message_box("Error", "Error message: \"{}\" Please Contact ch.kantee_st@tni.ac.th".format(e))
+
+
 def get_all_table_data(rest_name):
     try:
         client = get_database_client()

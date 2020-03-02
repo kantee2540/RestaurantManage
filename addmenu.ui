@@ -158,12 +158,12 @@
      </property>
      <item>
       <property name="text">
-       <string>บุฟเฟ่</string>
+       <string>อาหารจานเดี่ยว</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>อาหารจานเดี่ยว</string>
+       <string>บุฟเฟ่</string>
       </property>
      </item>
     </widget>
