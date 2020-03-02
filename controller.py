@@ -162,7 +162,7 @@ class MainPage(QtWidgets.QMainWindow):
                 all_quantity += j["quantity"]
             self.count_menu.append(int(all_quantity))
 
-            sub_value = [i["table_name"], i["person"], i["in_time"],  "N/A", i["price"]]
+            sub_value = [i["table_name"], i["person"], i["in_time"],  "N/A", "{:,}".format(i["price"])]
             self.row_value.append(sub_value)
 
         for value in self.row_value:
@@ -228,8 +228,11 @@ class MenuDialog(QtWidgets.QDialog):
 
         for value in self.row_value:
             row = []
-            for item in value:
-                cell = QtGui.QStandardItem(str(item))
+            for x, item in enumerate(value):
+                if x == 2:
+                    cell = QtGui.QStandardItem("{:,}".format(item))
+                else:
+                    cell = QtGui.QStandardItem(str(item))
                 row.append(cell)
             self.model.appendRow(row)
 
@@ -289,6 +292,7 @@ class AddMenuDialog(QtWidgets.QDialog):
         if data_controller.add_menu(menu_name, price, menu_category, restaurant_name):
             self.hide()
             menu_page.table_manage()
+            add_table_page.table_manage()
         else:
             message_box("Error", "Cannot Add menu")
 
@@ -327,6 +331,7 @@ class AddTablePage(QtWidgets.QMainWindow):
         self.ui.cancel_button.clicked.connect(self.click_cancel)
         self.ui.add_menu_button.clicked.connect(self.click_add_menu)
         self.ui.remove_button.clicked.connect(self.click_remove)
+        self.ui.addmenu_link.clicked.connect(self.click_add_new_menu)
 
     def table_manage(self):
         table_header = ["ชื่ออาหาร", "ราคา"]
@@ -373,7 +378,7 @@ class AddTablePage(QtWidgets.QMainWindow):
 
         menu_item = QtGui.QStandardItem(str(data_dict["menu_name"]))
         quantity_item = QtGui.QStandardItem(str(data_dict["quantity"]))
-        price_item = QtGui.QStandardItem(str(data_dict["price"]))
+        price_item = QtGui.QStandardItem("{:,}".format(data_dict["price"]))
 
         self.model_result.appendRow([menu_item, quantity_item, price_item])
         self.selected_menu.append(data_dict)
@@ -411,6 +416,10 @@ class AddTablePage(QtWidgets.QMainWindow):
                 message_box("Error", "Cannot Insert your information to database")
         else:
             message_box("กรอกให้ครบ", "กรุณาใส่ชื่อหรือเลขโต๊ะ")
+
+    def click_add_new_menu(self):
+        add_menu_page.setWindowModality(QtCore.Qt.ApplicationModal)
+        add_menu_page.show()
 
 
 class RegisterPage(QtWidgets.QMainWindow):
@@ -511,12 +520,15 @@ class HistoryDialog(QtWidgets.QDialog):
         for x, y in enumerate(self.row_values):
             row = []
             for k, item in enumerate(y):
-                cell = QtGui.QStandardItem(str(item))
+                if k == 3:
+                    cell = QtGui.QStandardItem("{:,}".format(item))
+                else:
+                    cell = QtGui.QStandardItem(str(item))
+
                 if item == "ยกเลิกรายการแล้ว" or item == "หมดเวลาแล้ว":
                     cell.setForeground(QtGui.QColor(255, 0, 0))
                 elif item == "ชำระเงินแล้ว":
                     cell.setForeground(QtGui.QColor(0, 150, 15))
-
                 row.append(cell)
             self.model.appendRow(row)
 
@@ -543,10 +555,10 @@ class CheckBillDialog(QtWidgets.QDialog):
     def list_menu(self, table_name, rest_name):
         self.data = data_controller.get_one_table_data(rest_name, table_name)
         self.data_set = {"table_name": self.data["table_name"], "person": self.data["person"], "in_time": self.data["in_time"]}
-        self.ui.table_name.setText(self.data["table_name"])
+        self.ui.table_name.setText("{}".format(self.data["table_name"]))
         self.ui.person.setText(self.data["person"])
         self.ui.in_time.setText(self.data["in_time"])
-        self.ui.total_price_label.setText(str(self.data["price"]))
+        self.ui.total_price_label.setText("{:,}".format(self.data["price"]))
 
         header = ["ชื่ออาหาร", "จำนวน", "ราคา"]
         self.model = QtGui.QStandardItemModel()
