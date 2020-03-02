@@ -147,6 +147,12 @@
    </item>
    <item row="3" column="0" colspan="2">
     <layout class="QFormLayout" name="formLayout">
+     <property name="labelAlignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+     </property>
+     <property name="formAlignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+     </property>
      <property name="horizontalSpacing">
       <number>30</number>
      </property>
@@ -170,19 +176,6 @@
       <widget class="QLabel" name="table_name">
        <property name="text">
         <string>0</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_4">
-       <property name="font">
-        <font>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>จำนวนคน</string>
        </property>
       </widget>
      </item>
@@ -230,6 +223,19 @@
       <widget class="QLabel" name="type">
        <property name="text">
         <string>0</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="font">
+        <font>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>จำนวนคน</string>
        </property>
       </widget>
      </item>
