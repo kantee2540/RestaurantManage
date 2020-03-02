@@ -43,7 +43,14 @@
    <property name="bottomMargin">
     <number>15</number>
    </property>
-   <item row="4" column="0" colspan="2">
+   <item row="1" column="0" colspan="2">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0" colspan="2">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <property name="topMargin">
       <number>10</number>
@@ -76,6 +83,19 @@
      </item>
     </layout>
    </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="label_4">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>ชื่อร้านใหม่</string>
+     </property>
+    </widget>
+   </item>
    <item row="0" column="0" colspan="2">
     <widget class="QLabel" name="label">
      <property name="maximumSize">
@@ -94,29 +114,16 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="label_4">
+   <item row="3" column="1">
+    <widget class="QLineEdit" name="new_rest_name_lineedit">
      <property name="maximumSize">
       <size>
        <width>16777215</width>
        <height>30</height>
       </size>
      </property>
-     <property name="text">
-      <string>ชื่อร้านใหม่</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="label_2">
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>30</height>
-      </size>
-     </property>
-     <property name="text">
-      <string>ชื่อร้านปัจจุบัน</string>
+     <property name="placeholderText">
+      <string>ป้อนชื่อร้านใหม่ของคุณ</string>
      </property>
     </widget>
    </item>
@@ -133,18 +140,21 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="1">
-    <widget class="QLineEdit" name="new_rest_name_lineedit">
+   <item row="2" column="0">
+    <widget class="QLabel" name="label_2">
      <property name="maximumSize">
       <size>
        <width>16777215</width>
        <height>30</height>
       </size>
      </property>
+     <property name="text">
+      <string>ชื่อร้านปัจจุบัน</string>
+     </property>
     </widget>
    </item>
-   <item row="1" column="0" colspan="2">
-    <widget class="Line" name="line">
+   <item row="4" column="0" colspan="2">
+    <widget class="Line" name="line_2">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>

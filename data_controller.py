@@ -150,6 +150,21 @@ def get_one_table_data(rest_name, table_name):
         message_box("Error", "Error message: \"{}\" Please Contact ch.kantee_st@tni.ac.th".format(e))
 
 
+def commit_bill(rest_name, table_name):
+    try:
+        client = get_database_client()
+        db = client.get_database(projectDb)
+        cb = db.Table.update({"$and": [{"restaurant_name": rest_name}, {"table_name": table_name}]},
+                             {"$set": {"status": "S"}})
+        if cb:
+            return True
+        else:
+            return False
+
+    except Exception as e:
+        message_box("Error", "Error message: \"{}\" Please Contact ch.kantee_st@tni.ac.th".format(e))
+
+
 def get_all_table_data(rest_name):
     try:
         client = get_database_client()

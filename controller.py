@@ -1,7 +1,7 @@
 # To Run this project run this file
 
 import sys
-from PyQt5 import QtWidgets, QtGui, QtCore
+from PyQt5 import QtWidgets, QtGui, QtCore, QtPrintSupport
 
 import main
 import register
@@ -13,6 +13,7 @@ import editmenu
 import edit_rest_info
 import history
 import check_bill
+import done_bill
 
 import data_controller
 
@@ -487,6 +488,7 @@ class HistoryDialog(QtWidgets.QDialog):
         self.ui.tableView.setEditTriggers(QtWidgets.QTableView.NoEditTriggers)
         self.ui.tableView.setSelectionBehavior(QtWidgets.QTableView.SelectRows)
         self.ui.tableView.setSortingEnabled(True)
+        self.ui.tableView.sortByColumn(4, QtCore.Qt.DescendingOrder)
         rest_name = self.settings.value('rest_name')
         self.data = data_controller.get_all_table_data(rest_name)
         self.row_values = []
@@ -499,17 +501,22 @@ class HistoryDialog(QtWidgets.QDialog):
             elif i["status"] == "T":
                 status = "หมดเวลาแล้ว"
             elif i["status"] == "S":
-                status = "จ่ายตังเรียบร้อยแล้ว"
+                status = "ชำระเงินแล้ว"
             else:
                 status = "N/A"
 
             sub_value = [i["table_name"], i["person"], i["in_time"], i["price"], status]
             self.row_values.append(sub_value)
 
-        for y in self.row_values:
+        for x, y in enumerate(self.row_values):
             row = []
-            for item in y:
+            for k, item in enumerate(y):
                 cell = QtGui.QStandardItem(str(item))
+                if item == "ยกเลิกรายการแล้ว" or item == "หมดเวลาแล้ว":
+                    cell.setForeground(QtGui.QColor(255, 0, 0))
+                elif item == "ชำระเงินแล้ว":
+                    cell.setForeground(QtGui.QColor(0, 150, 15))
+
                 row.append(cell)
             self.model.appendRow(row)
 
@@ -525,18 +532,21 @@ class CheckBillDialog(QtWidgets.QDialog):
         super(CheckBillDialog, self).__init__(parent)
         self.ui = check_bill.Ui_Dialog()
         self.ui.setupUi(self)
+        self.setting = QtCore.QSettings('config', 'restaurant')
+        self.table_name = ""
         self.ui.cancel_button.clicked.connect(self.dimiss)
+        self.ui.check_bill_button.clicked.connect(self.check_bill)
 
     def dimiss(self):
         self.hide()
 
     def list_menu(self, table_name, rest_name):
-        data = data_controller.get_one_table_data(rest_name, table_name)
-
-        self.ui.table_name.setText(data["table_name"])
-        self.ui.person.setText(data["person"])
-        self.ui.in_time.setText(data["in_time"])
-        self.ui.total_price_label.setText(str(data["price"]))
+        self.data = data_controller.get_one_table_data(rest_name, table_name)
+        self.data_set = {"table_name": self.data["table_name"], "person": self.data["person"], "in_time": self.data["in_time"]}
+        self.ui.table_name.setText(self.data["table_name"])
+        self.ui.person.setText(self.data["person"])
+        self.ui.in_time.setText(self.data["in_time"])
+        self.ui.total_price_label.setText(str(self.data["price"]))
 
         header = ["ชื่ออาหาร", "จำนวน", "ราคา"]
         self.model = QtGui.QStandardItemModel()
@@ -547,7 +557,7 @@ class CheckBillDialog(QtWidgets.QDialog):
         self.ui.tableView.setColumnWidth(0, 100)
 
         menu_values = []
-        for i in data["menu_set"]:
+        for i in self.data["menu_set"]:
             sub_values = [i["menu_name"], i["quantity"], i["price"]]
             menu_values.append(sub_values)
 
@@ -557,6 +567,59 @@ class CheckBillDialog(QtWidgets.QDialog):
                 cell = QtGui.QStandardItem(str(k))
                 row.append(cell)
             self.model.appendRow(row)
+
+    def check_bill(self):
+        rest_name = self.setting.value('rest_name')
+        table_name = self.data_set["table_name"]
+        if data_controller.commit_bill(rest_name, table_name):
+            self.hide()
+            done_bill_page.setWindowModality(QtCore.Qt.ApplicationModal)
+            done_bill_page.set_value(self.data)
+            done_bill_page.show()
+
+
+class DoneBill(QtWidgets.QDialog):
+    def __init__(self, parent=None):
+        super(DoneBill, self).__init__(parent)
+        self.ui = done_bill.Ui_Dialog()
+        self.ui.setupUi(self)
+        self.ui.ok_button.clicked.connect(self.click_ok)
+        self.ui.print_button.clicked.connect(self.click_print)
+        self.data = {}
+
+    def set_value(self, item):
+        self.data = item
+
+    def click_ok(self):
+        self.hide()
+        main_page.table_manage()
+
+    def click_print(self):
+        strr = "\n{}\n".format(self.data["restaurant_name"])
+        strr += "ชื่อโต๊ะ : {}\n".format(self.data["table_name"])
+        strr += "จำนวนคน : {}\n".format(self.data["person"])
+        strr += "เวลาเข้า : {}\n".format(self.data["in_time"])
+        strr += "{}\n".format("*" * 30)
+
+        menu_set = ""
+        for x, i in enumerate(self.data["menu_set"]):
+            menu_set += "{0:3}. {1:15}\t{2:>4} หน่วย {3:>10}\n".format(x + 1, i["menu_name"], i["quantity"], i["price"])
+        print(menu_set)
+        strr += menu_set
+        strr += "{}\n".format("*" * 30)
+        strr += "ราคารวมทั้งหมด {} บาท\n".format(self.data["price"])
+        strr += "ขอบคุณที่ใช้บริการ"
+
+        printer = QtPrintSupport.QPrinter()
+        painter = QtGui.QPainter()
+
+        printer.setPageMargins(10.0, 10.0, 0.0, 0.0, QtPrintSupport.QPrinter.Point)
+        printer.setFullPage(True)
+
+        painter.begin(printer)
+        painter.drawText(painter.viewport(), QtCore.Qt.AlignTop, strr)
+        painter.end()
+        message_box("กำลังพิมพ์", "ได้ส่งใบเสร็จไปที่เครื่องพิมพ์แล้ว")
 
 
 if __name__ == "__main__":
@@ -572,6 +635,7 @@ if __name__ == "__main__":
     edit_rest = EditRestaurantInfo()
     history_page = HistoryDialog()
     check_bill_page = CheckBillDialog()
+    done_bill_page = DoneBill()
 
     login_page.show()
     sys.exit(app.exec_())
