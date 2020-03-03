@@ -489,7 +489,7 @@ class HistoryDialog(QtWidgets.QDialog):
         self.ui.clear_history.clicked.connect(self.clear_history)
 
     def table_manage(self):
-        table_header = ["ชื่อโต๊ะ", "จำนวนคน", "เวลาเข้า", "ราคามื้อนี้", "สถานะ"]
+        table_header = ["ชื่อโต๊ะ", "จำนวนคน", "เวลาเข้า", "วันที่เข้า", "ราคามื้อนี้", "สถานะ"]
         self.model = QtGui.QStandardItemModel()
         self.ui.tableView.setModel(self.model)
 
@@ -514,13 +514,13 @@ class HistoryDialog(QtWidgets.QDialog):
             else:
                 status = "N/A"
 
-            sub_value = [i["table_name"], i["person"], i["in_time"], i["price"], status]
+            sub_value = [i["table_name"], i["person"], i["in_time"], i["date"], i["price"], status]
             self.row_values.append(sub_value)
 
         for x, y in enumerate(self.row_values):
             row = []
             for k, item in enumerate(y):
-                if k == 3:
+                if k == 4:
                     cell = QtGui.QStandardItem("{:,}".format(item))
                 else:
                     cell = QtGui.QStandardItem(str(item))

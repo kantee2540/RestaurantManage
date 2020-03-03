@@ -99,14 +99,25 @@ def add_table(table_name, person, menu_set, restaurant):
         client = get_database_client()
         db = client.get_database(projectDb)
         current_time = datetime.datetime.now().strftime("%X")
+        today = datetime.datetime.now().strftime("%x")
+
+        added_list = []
         total_price = 0
         for i in menu_set:
             price = i["price"]
             total_price += price
 
+            # +1 order
+            if i["menu_name"] not in added_list:
+                added_list.append(i["menu_name"])
+                db.Menu.update({"menu_name": i["menu_name"]}, {"$inc": {"order": + 1}})
+            else:
+                continue
+
         data = {"table_name": table_name,
                 "person": person,
                 "in_time": current_time,
+                "date": today,
                 "price": total_price,
                 "menu_set": menu_set,
                 "status": "A",

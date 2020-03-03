@@ -428,6 +428,7 @@
     <addaction name="refresh_action"/>
     <addaction name="separator"/>
     <addaction name="actionHistory"/>
+    <addaction name="actionResult"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuMenu"/>
@@ -529,6 +530,11 @@
   <action name="actionHistory">
    <property name="text">
     <string>ประวัติลูกค้า</string>
+   </property>
+  </action>
+  <action name="actionResult">
+   <property name="text">
+    <string>สรุปยอดขาย</string>
    </property>
   </action>
  </widget>
