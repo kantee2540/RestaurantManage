@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>670</width>
-    <height>707</height>
+    <width>956</width>
+    <height>779</height>
    </rect>
   </property>
   <property name="font">
@@ -16,7 +16,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>ผลสรุปยอดขาย</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="font">
@@ -40,27 +40,13 @@
     <property name="verticalSpacing">
      <number>15</number>
     </property>
-    <item row="1" column="1">
-     <widget class="QLabel" name="label_3">
-      <property name="text">
-       <string>เเมนูที่นิยมสั่งมากที่สุด</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QLabel" name="label_2">
-      <property name="text">
-       <string>โต๊ะที่มียอดขายสูงสุด</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="1">
+    <item row="8" column="1">
      <widget class="QTableView" name="top_menu_tableView"/>
     </item>
-    <item row="2" column="0">
+    <item row="8" column="0">
      <widget class="QTableView" name="top_table_tableView"/>
     </item>
-    <item row="0" column="0" colspan="2">
+    <item row="0" column="0">
      <widget class="QLabel" name="label">
       <property name="font">
        <font>
@@ -72,40 +58,37 @@
       </property>
      </widget>
     </item>
-    <item row="7" column="0">
-     <widget class="QLabel" name="cancel_label">
-      <property name="text">
-       <string>จำนวนครั้งที่ได้ยกเลิกรายการทั้งหมด : 0</string>
+    <item row="4" column="0">
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <property name="leftMargin">
+       <number>0</number>
       </property>
-     </widget>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>โต๊ะที่มียอดขายสูงสุด</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>แสดงโต๊ะที่ได้สั่งอาหารแล้วมียอดมากที่สุด 10 อันดับที่ผ่านมา</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
-    <item row="6" column="0">
-     <widget class="QLabel" name="done_label">
-      <property name="text">
-       <string>จำนวนครั้งชำระเงินทั้งหมด : 0</string>
-      </property>
-     </widget>
-    </item>
-    <item row="8" column="0">
-     <widget class="QLabel" name="all_sale_label">
-      <property name="text">
-       <string>ยอดขายรวมที่ผ่านมาทั้งหมด : 0</string>
-      </property>
-     </widget>
-    </item>
-    <item row="5" column="0">
-     <widget class="QLabel" name="today_total_label">
-      <property name="font">
-       <font>
-        <pointsize>16</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>ยอดขายรวมวันนี้ : 0</string>
-      </property>
-     </widget>
-    </item>
-    <item row="5" column="1" rowspan="3">
+    <item row="11" column="1" rowspan="3">
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <widget class="QCommandLinkButton" name="menu_button">
@@ -123,6 +106,63 @@
       </item>
      </layout>
     </item>
+    <item row="11" column="0">
+     <widget class="QLabel" name="today_total_label">
+      <property name="font">
+       <font>
+        <pointsize>16</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>ยอดขายรวมวันนี้ : 0</string>
+      </property>
+     </widget>
+    </item>
+    <item row="13" column="0">
+     <widget class="QLabel" name="cancel_label">
+      <property name="text">
+       <string>จำนวนครั้งที่ได้ยกเลิกรายการทั้งหมด : 0</string>
+      </property>
+     </widget>
+    </item>
+    <item row="12" column="0">
+     <widget class="QLabel" name="done_label">
+      <property name="text">
+       <string>จำนวนครั้งชำระเงินทั้งหมด : 0</string>
+      </property>
+     </widget>
+    </item>
+    <item row="15" column="0">
+     <widget class="QLabel" name="all_sale_label">
+      <property name="text">
+       <string>ยอดขายรวมที่ผ่านมาทั้งหมด : 0</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1">
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <widget class="QLabel" name="label_3">
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>เมนูที่นิยมสั่งมากที่สุด</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>แสดงเมนูอาหารที่มีคนสั่งมากที่สุด 10 อันดับที่ผ่านมา</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -130,7 +170,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>670</width>
+     <width>956</width>
      <height>23</height>
     </rect>
    </property>

@@ -278,6 +278,59 @@ def update_menu(old_menu_name, menu_name, price, category):
         message_box("Error", "Error message: \"{}\" Please Contact ch.kantee_st@tni.ac.th".format(e))
 
 
+def get_top_table(rest_name):
+    try:
+        client = get_database_client()
+        db = client.get_database(projectDb)
+        data = db.Table.find({"$and": [{"restaurant_name": rest_name},
+                                       {"status": "S"}]}).sort("price", pymongo.DESCENDING).limit(10)
+        if data:
+            return data
+
+    except Exception as e:
+        message_box("Error", "Error message: \"{}\" Please Contact ch.kantee_st@tni.ac.th".format(e))
+
+
+def get_top_menu(rest_name):
+    try:
+        client = get_database_client()
+        db = client.get_database(projectDb)
+        data = db.Menu.find({"restaurant_name": rest_name}).sort("order", pymongo.DESCENDING).limit(10)
+        if data:
+            return data
+
+    except Exception as e:
+        message_box("Error", "Error message: \"{}\" Please Contact ch.kantee_st@tni.ac.th".format(e))
+
+
+def get_total_value(rest_name):
+    try:
+        client = get_database_client()
+        db = client.get_database(projectDb)
+        today = datetime.datetime.now().strftime("%x")
+        data_today = db.Table.find({"$and": [{"restaurant_name": rest_name},
+                                    {"date": today}, {"status": "S"}]})
+        data_all = db.Table.find({"$and": [{"restaurant_name": rest_name}, {"status": "S"}]})
+        count_cancelled = db.Table.count_documents({"$and": [{"restaurant_name": rest_name}, {"status": "C"}]})
+        count_done = db.Table.count_documents({"$and": [{"restaurant_name": rest_name}, {"status": "S"}]})
+
+        if data_today and data_all:
+            total_today = 0
+            total_all = 0
+
+            for i in data_today:
+                total_today += i["price"]
+
+            for j in data_all:
+                total_all += j["price"]
+
+            return {"total_today": total_today, "total_all": total_all,
+                    "count_cancel": count_cancelled, "count_done": count_done}
+
+    except Exception as e:
+        message_box("Error", "Error message: \"{}\" Please Contact ch.kantee_st@tni.ac.th".format(e))
+
+
 def clear_lineedit(self):
     self.ui.rest_edit.clear()
     self.ui.user_edit.clear()

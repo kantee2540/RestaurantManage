@@ -14,6 +14,7 @@ import edit_rest_info
 import history
 import check_bill
 import done_bill
+import result
 
 import data_controller
 
@@ -79,6 +80,7 @@ class MainPage(QtWidgets.QMainWindow):
         self.ui.actionEditRest.triggered.connect(self.click_edit_rest)
         self.ui.cancelmenu_action.triggered.connect(self.click_cancel_order)
         self.ui.actionHistory.triggered.connect(self.click_history)
+        self.ui.actionResult.triggered.connect(self.click_see_result)
 
         self.ui.add_table_button.clicked.connect(self.click_add_table)
         self.ui.cancel_button.clicked.connect(self.click_cancel_order)
@@ -126,6 +128,11 @@ class MainPage(QtWidgets.QMainWindow):
         history_page.setWindowModality(QtCore.Qt.ApplicationModal)
         history_page.show()
         history_page.table_manage()
+
+    def click_see_result(self):
+        result_page.setWindowModality(QtCore.Qt.ApplicationModal)
+        result_page.show()
+        result_page.display_result()
 
     def sign_out(self):
         self.hide()
@@ -263,8 +270,11 @@ class MenuDialog(QtWidgets.QDialog):
         edit_menu_page.old_menu = edit_menu
         edit_menu_page.setWindowModality(QtCore.Qt.ApplicationModal)
         edit_menu_page.ui.menu_name_lineedit.setText(edit_menu)
-        if edit_type == "อาหารจานเดี่ยว":
+
+        if edit_type == "บุฟเฟ่":
             edit_menu_page.ui.menu_type_comboBox.setCurrentIndex(1)
+        elif edit_type == "เครื่องดื่ม":
+            edit_menu_page.ui.menu_type_comboBox.setCurrentIndex(2)
         else:
             edit_menu_page.ui.menu_type_comboBox.setCurrentIndex(0)
 
@@ -393,7 +403,7 @@ class AddTablePage(QtWidgets.QMainWindow):
             self.ui.remove_button.setEnabled(False)
 
     def set_text_totalprice(self):
-        self.ui.total_price_text.setText("ราคารวมทั้งหมด : {}".format(self.total_price))
+        self.ui.total_price_text.setText("ราคารวมทั้งหมด : {:,}".format(self.total_price))
 
     def select_item_tableview(self):
         self.ui.remove_button.setEnabled(True)
@@ -616,7 +626,6 @@ class DoneBill(QtWidgets.QDialog):
         menu_set = ""
         for x, i in enumerate(self.data["menu_set"]):
             menu_set += "{0:3}. {1:15}\t{2:>4} หน่วย {3:>10}\n".format(x + 1, i["menu_name"], i["quantity"], i["price"])
-        print(menu_set)
         strr += menu_set
         strr += "{}\n".format("*" * 30)
         strr += "ราคารวมทั้งหมด {} บาท\n".format(self.data["price"])
@@ -634,6 +643,80 @@ class DoneBill(QtWidgets.QDialog):
         message_box("กำลังพิมพ์", "ได้ส่งใบเสร็จไปที่เครื่องพิมพ์แล้ว")
 
 
+class ResultWindow(QtWidgets.QMainWindow):
+    def __init__(self, parent=None):
+        super(ResultWindow, self).__init__(parent)
+        self.ui = result.Ui_MainWindow()
+        self.ui.setupUi(self)
+        self.setting = QtCore.QSettings('config', 'restaurant')
+        self.ui.history_button.clicked.connect(self.click_see_history)
+        self.ui.menu_button.clicked.connect(self.click_see_menu)
+
+    def click_see_history(self):
+        history_page.setWindowModality(QtCore.Qt.ApplicationModal)
+        history_page.show()
+        history_page.table_manage()
+
+    def click_see_menu(self):
+        menu_page.setWindowModality(QtCore.Qt.ApplicationModal)
+        menu_page.show()
+        menu_page.table_manage()
+
+    def display_result(self):
+        top_table_header = ["ชื่อโต๊ะ", "เวลาเข้า", "วันที่", "ยอดขายรวม"]
+        top_menu_header = ["ชื่อเมนู", "ประเภท", "ราคา", "จำนวนครั้งที่สั่ง"]
+
+        self.top_table_model = QtGui.QStandardItemModel()
+        self.top_menu_model = QtGui.QStandardItemModel()
+        self.ui.top_table_tableView.setModel(self.top_table_model)
+        self.ui.top_table_tableView.setSelectionBehavior(QtWidgets.QTableView.SelectRows)
+        self.ui.top_table_tableView.setEditTriggers(QtWidgets.QTableView.NoEditTriggers)
+        self.ui.top_menu_tableView.setSelectionBehavior(QtWidgets.QTableView.SelectRows)
+        self.ui.top_menu_tableView.setEditTriggers(QtWidgets.QTableView.NoEditTriggers)
+
+        self.ui.top_menu_tableView.setModel(self.top_menu_model)
+        self.top_table_model.setHorizontalHeaderLabels(top_table_header)
+        self.top_menu_model.setHorizontalHeaderLabels(top_menu_header)
+
+        rest_name = self.setting.value('rest_name')
+
+        self.top_table_data = data_controller.get_top_table(rest_name)
+        self.top_menu_data = data_controller.get_top_menu(rest_name)
+
+        self.top_row_value = []
+        self.top_menu_value = []
+
+        for i in self.top_table_data:
+            sub_value = [i["table_name"], i["in_time"], i["date"], "{:,}".format(i["price"])]
+            self.top_row_value.append(sub_value)
+
+        for iy in self.top_row_value:
+            row = []
+            for item in iy:
+                cell = QtGui.QStandardItem(str(item))
+                row.append(cell)
+
+            self.top_table_model.appendRow(row)
+
+        for j in self.top_menu_data:
+            sub_value = [j["menu_name"], j["category"], "{:,}".format(j["price"]), "{:,}".format(j["order"])]
+            self.top_menu_value.append(sub_value)
+
+        for jy in self.top_menu_value:
+            row = []
+            for item in jy:
+                cell = QtGui.QStandardItem(str(item))
+                row.append(cell)
+
+            self.top_menu_model.appendRow(row)
+
+        total_data = data_controller.get_total_value(rest_name)
+        self.ui.today_total_label.setText("ยอดขายรวมวันนี้ : {:,}".format(total_data["total_today"]))
+        self.ui.done_label.setText("จำนวนครั้งชำระเงินทั้งหมด : {:,}".format(total_data["count_done"]))
+        self.ui.cancel_label.setText("จำนวนครั้งที่ได้ยกเลิกรายการทั้งหมด : {:,}".format(total_data["count_cancel"]))
+        self.ui.all_sale_label.setText("ยอดขายรวมที่ผ่านมาทั้งหมด : {:,}".format(total_data["total_all"]))
+
+
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     # initialize
@@ -648,6 +731,7 @@ if __name__ == "__main__":
     history_page = HistoryDialog()
     check_bill_page = CheckBillDialog()
     done_bill_page = DoneBill()
+    result_page = ResultWindow()
 
     login_page.show()
     sys.exit(app.exec_())
