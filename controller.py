@@ -79,6 +79,7 @@ class MainPage(QtWidgets.QMainWindow):
         self.ui.actionAdd_Menu.triggered.connect(self.click_add_menu)
         self.ui.actionEditRest.triggered.connect(self.click_edit_rest)
         self.ui.cancelmenu_action.triggered.connect(self.click_cancel_order)
+        self.ui.actionCal.triggered.connect(self.click_check_bill)
         self.ui.actionHistory.triggered.connect(self.click_history)
         self.ui.actionResult.triggered.connect(self.click_see_result)
 
@@ -147,7 +148,7 @@ class MainPage(QtWidgets.QMainWindow):
             self.table_manage()
 
     def table_manage(self):
-        table_header = ["ชื่อโต๊ะ", "จำนวนคน", "เวลาเข้า", "เวลาที่เหลือ", "ราคามื้อนี้"]
+        table_header = ["ชื่อโต๊ะ", "จำนวนคน", "เวลาเข้า", "ราคามื้อนี้"]
         self.model = QtGui.QStandardItemModel()
         self.ui.tableView.setModel(self.model)
         self.model.setHorizontalHeaderLabels(table_header)
@@ -169,7 +170,7 @@ class MainPage(QtWidgets.QMainWindow):
                 all_quantity += j["quantity"]
             self.count_menu.append(int(all_quantity))
 
-            sub_value = [i["table_name"], i["person"], i["in_time"],  "N/A", "{:,}".format(i["price"])]
+            sub_value = [i["table_name"], i["person"], i["in_time"], "{:,}".format(i["price"])]
             self.row_value.append(sub_value)
 
         for value in self.row_value:
@@ -196,7 +197,7 @@ class MainPage(QtWidgets.QMainWindow):
             elif q == 2:
                 in_time = "เวลาที่เข้า : {}".format(i)
                 self.ui.timein.setText(in_time)
-            elif q == 4:
+            elif q == 3:
                 total_txt = "ราคาอาหารมื้อนี้ : {}".format(i)
                 self.ui.total_price.setText(total_txt)
 
