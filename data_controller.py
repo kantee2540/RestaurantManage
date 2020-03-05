@@ -86,7 +86,7 @@ def register_process(self):
         data = {"restaurant_name": restaurant_name, "username": username, "password": password_encrypt}
         rs = db.User.insert_one(data)
         if rs:
-            message_box("Register", "Register successful!\n Your restaurant name : {}".format(username))
+            message_box("Register", "ลงทะเบียนสำเร็จ\n ชื่อบัญชีเข้าใช้ของคุณ : {}".format(username))
             clear_lineedit(self)
             self.close()
 
@@ -224,7 +224,8 @@ def add_menu(menu_name, price, category, restaurant):
         data = {"menu_name": menu_name,
                 "price": price,
                 "category": category,
-                "restaurant_name": restaurant}
+                "restaurant_name": restaurant,
+                "order": 0}
         am = db.Menu.insert_one(data)
         if am:
             return True

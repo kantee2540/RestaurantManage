@@ -405,6 +405,7 @@ class AddTablePage(QtWidgets.QMainWindow):
 
     def set_text_totalprice(self):
         self.ui.total_price_text.setText("ราคารวมทั้งหมด : {:,}".format(self.total_price))
+        self.ui.total_price_text.repaint()
 
     def select_item_tableview(self):
         self.ui.remove_button.setEnabled(True)
